@@ -8,7 +8,7 @@ import (
 
 	asrt "github.com/stretchr/testify/assert"
 
-	tmsync "github.com/tendermint/tendermint/libs/sync"
+	tmsync "github.com/sisu-network/tendermint/libs/sync"
 )
 
 type thCounter struct {

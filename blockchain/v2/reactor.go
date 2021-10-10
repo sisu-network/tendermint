@@ -5,14 +5,14 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/tendermint/tendermint/behaviour"
-	bc "github.com/tendermint/tendermint/blockchain"
-	"github.com/tendermint/tendermint/libs/log"
-	tmsync "github.com/tendermint/tendermint/libs/sync"
-	"github.com/tendermint/tendermint/p2p"
-	bcproto "github.com/tendermint/tendermint/proto/tendermint/blockchain"
-	"github.com/tendermint/tendermint/state"
-	"github.com/tendermint/tendermint/types"
+	"github.com/sisu-network/tendermint/behaviour"
+	bc "github.com/sisu-network/tendermint/blockchain"
+	"github.com/sisu-network/tendermint/libs/log"
+	tmsync "github.com/sisu-network/tendermint/libs/sync"
+	"github.com/sisu-network/tendermint/p2p"
+	bcproto "github.com/sisu-network/tendermint/proto/tendermint/blockchain"
+	"github.com/sisu-network/tendermint/state"
+	"github.com/sisu-network/tendermint/types"
 )
 
 const (

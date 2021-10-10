@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/tendermint/tendermint/crypto"
-	cryptoenc "github.com/tendermint/tendermint/crypto/encoding"
-	privvalproto "github.com/tendermint/tendermint/proto/tendermint/privval"
-	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
-	"github.com/tendermint/tendermint/types"
+	"github.com/sisu-network/tendermint/crypto"
+	cryptoenc "github.com/sisu-network/tendermint/crypto/encoding"
+	privvalproto "github.com/sisu-network/tendermint/proto/tendermint/privval"
+	tmproto "github.com/sisu-network/tendermint/proto/tendermint/types"
+	"github.com/sisu-network/tendermint/types"
 )
 
 // SignerClient implements PrivValidator.

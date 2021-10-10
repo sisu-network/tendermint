@@ -10,11 +10,11 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/tendermint/tendermint/crypto"
-	"github.com/tendermint/tendermint/crypto/ed25519"
-	"github.com/tendermint/tendermint/libs/log"
-	"github.com/tendermint/tendermint/privval"
-	"github.com/tendermint/tendermint/types"
+	"github.com/sisu-network/tendermint/crypto"
+	"github.com/sisu-network/tendermint/crypto/ed25519"
+	"github.com/sisu-network/tendermint/libs/log"
+	"github.com/sisu-network/tendermint/privval"
+	"github.com/sisu-network/tendermint/types"
 )
 
 const (

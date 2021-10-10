@@ -10,16 +10,16 @@ import (
 	"github.com/gogo/protobuf/proto"
 	gogotypes "github.com/gogo/protobuf/types"
 
-	"github.com/tendermint/tendermint/crypto"
-	"github.com/tendermint/tendermint/crypto/merkle"
-	"github.com/tendermint/tendermint/crypto/tmhash"
-	"github.com/tendermint/tendermint/libs/bits"
-	tmbytes "github.com/tendermint/tendermint/libs/bytes"
-	tmmath "github.com/tendermint/tendermint/libs/math"
-	tmsync "github.com/tendermint/tendermint/libs/sync"
-	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
-	tmversion "github.com/tendermint/tendermint/proto/tendermint/version"
-	"github.com/tendermint/tendermint/version"
+	"github.com/sisu-network/tendermint/crypto"
+	"github.com/sisu-network/tendermint/crypto/merkle"
+	"github.com/sisu-network/tendermint/crypto/tmhash"
+	"github.com/sisu-network/tendermint/libs/bits"
+	tmbytes "github.com/sisu-network/tendermint/libs/bytes"
+	tmmath "github.com/sisu-network/tendermint/libs/math"
+	tmsync "github.com/sisu-network/tendermint/libs/sync"
+	tmproto "github.com/sisu-network/tendermint/proto/tendermint/types"
+	tmversion "github.com/sisu-network/tendermint/proto/tendermint/version"
+	"github.com/sisu-network/tendermint/version"
 )
 
 const (

@@ -18,11 +18,11 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/tendermint/tendermint/config"
-	"github.com/tendermint/tendermint/crypto/ed25519"
-	"github.com/tendermint/tendermint/libs/log"
-	tmsync "github.com/tendermint/tendermint/libs/sync"
-	"github.com/tendermint/tendermint/p2p/conn"
+	"github.com/sisu-network/tendermint/config"
+	"github.com/sisu-network/tendermint/crypto/ed25519"
+	"github.com/sisu-network/tendermint/libs/log"
+	tmsync "github.com/sisu-network/tendermint/libs/sync"
+	"github.com/sisu-network/tendermint/p2p/conn"
 )
 
 var (

@@ -1,8 +1,8 @@
 package core
 
 import (
-	ctypes "github.com/tendermint/tendermint/rpc/core/types"
-	rpctypes "github.com/tendermint/tendermint/rpc/jsonrpc/types"
+	ctypes "github.com/sisu-network/tendermint/rpc/core/types"
+	rpctypes "github.com/sisu-network/tendermint/rpc/jsonrpc/types"
 )
 
 // Health gets node health. Returns empty result (200 OK) on success, no

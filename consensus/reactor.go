@@ -9,18 +9,18 @@ import (
 
 	"github.com/gogo/protobuf/proto"
 
-	cstypes "github.com/tendermint/tendermint/consensus/types"
-	"github.com/tendermint/tendermint/libs/bits"
-	tmevents "github.com/tendermint/tendermint/libs/events"
-	tmjson "github.com/tendermint/tendermint/libs/json"
-	"github.com/tendermint/tendermint/libs/log"
-	tmsync "github.com/tendermint/tendermint/libs/sync"
-	"github.com/tendermint/tendermint/p2p"
-	tmcons "github.com/tendermint/tendermint/proto/tendermint/consensus"
-	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
-	sm "github.com/tendermint/tendermint/state"
-	"github.com/tendermint/tendermint/types"
-	tmtime "github.com/tendermint/tendermint/types/time"
+	cstypes "github.com/sisu-network/tendermint/consensus/types"
+	"github.com/sisu-network/tendermint/libs/bits"
+	tmevents "github.com/sisu-network/tendermint/libs/events"
+	tmjson "github.com/sisu-network/tendermint/libs/json"
+	"github.com/sisu-network/tendermint/libs/log"
+	tmsync "github.com/sisu-network/tendermint/libs/sync"
+	"github.com/sisu-network/tendermint/p2p"
+	tmcons "github.com/sisu-network/tendermint/proto/tendermint/consensus"
+	tmproto "github.com/sisu-network/tendermint/proto/tendermint/types"
+	sm "github.com/sisu-network/tendermint/state"
+	"github.com/sisu-network/tendermint/types"
+	tmtime "github.com/sisu-network/tendermint/types/time"
 )
 
 const (

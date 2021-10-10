@@ -4,12 +4,12 @@ import (
 	"encoding/json"
 	"time"
 
-	abci "github.com/tendermint/tendermint/abci/types"
-	"github.com/tendermint/tendermint/crypto"
-	"github.com/tendermint/tendermint/libs/bytes"
-	"github.com/tendermint/tendermint/p2p"
-	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
-	"github.com/tendermint/tendermint/types"
+	abci "github.com/sisu-network/tendermint/abci/types"
+	"github.com/sisu-network/tendermint/crypto"
+	"github.com/sisu-network/tendermint/libs/bytes"
+	"github.com/sisu-network/tendermint/p2p"
+	tmproto "github.com/sisu-network/tendermint/proto/tendermint/types"
+	"github.com/sisu-network/tendermint/types"
 )
 
 // List of blocks

@@ -8,10 +8,10 @@ import (
 
 	dbm "github.com/tendermint/tm-db"
 
-	tmsync "github.com/tendermint/tendermint/libs/sync"
-	"github.com/tendermint/tendermint/light/store"
-	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
-	"github.com/tendermint/tendermint/types"
+	tmsync "github.com/sisu-network/tendermint/libs/sync"
+	"github.com/sisu-network/tendermint/light/store"
+	tmproto "github.com/sisu-network/tendermint/proto/tendermint/types"
+	"github.com/sisu-network/tendermint/types"
 )
 
 var (

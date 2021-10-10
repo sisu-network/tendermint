@@ -8,12 +8,12 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/tendermint/tendermint/crypto"
-	"github.com/tendermint/tendermint/crypto/tmhash"
-	tmrand "github.com/tendermint/tendermint/libs/rand"
-	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
-	tmversion "github.com/tendermint/tendermint/proto/tendermint/version"
-	"github.com/tendermint/tendermint/version"
+	"github.com/sisu-network/tendermint/crypto"
+	"github.com/sisu-network/tendermint/crypto/tmhash"
+	tmrand "github.com/sisu-network/tendermint/libs/rand"
+	tmproto "github.com/sisu-network/tendermint/proto/tendermint/types"
+	tmversion "github.com/sisu-network/tendermint/proto/tendermint/version"
+	"github.com/sisu-network/tendermint/version"
 )
 
 var defaultVoteTime = time.Date(2019, 1, 1, 0, 0, 0, 0, time.UTC)

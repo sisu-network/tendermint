@@ -10,18 +10,18 @@ import (
 
 	"github.com/spf13/viper"
 
-	"github.com/tendermint/tendermint/abci/server"
-	"github.com/tendermint/tendermint/config"
-	"github.com/tendermint/tendermint/crypto/ed25519"
-	tmflags "github.com/tendermint/tendermint/libs/cli/flags"
-	"github.com/tendermint/tendermint/libs/log"
-	tmnet "github.com/tendermint/tendermint/libs/net"
-	"github.com/tendermint/tendermint/node"
-	"github.com/tendermint/tendermint/p2p"
-	"github.com/tendermint/tendermint/privval"
-	"github.com/tendermint/tendermint/proxy"
-	mcs "github.com/tendermint/tendermint/test/maverick/consensus"
-	maverick "github.com/tendermint/tendermint/test/maverick/node"
+	"github.com/sisu-network/tendermint/abci/server"
+	"github.com/sisu-network/tendermint/config"
+	"github.com/sisu-network/tendermint/crypto/ed25519"
+	tmflags "github.com/sisu-network/tendermint/libs/cli/flags"
+	"github.com/sisu-network/tendermint/libs/log"
+	tmnet "github.com/sisu-network/tendermint/libs/net"
+	"github.com/sisu-network/tendermint/node"
+	"github.com/sisu-network/tendermint/p2p"
+	"github.com/sisu-network/tendermint/privval"
+	"github.com/sisu-network/tendermint/proxy"
+	mcs "github.com/sisu-network/tendermint/test/maverick/consensus"
+	maverick "github.com/sisu-network/tendermint/test/maverick/node"
 )
 
 var logger = log.NewTMLogger(log.NewSyncWriter(os.Stdout))

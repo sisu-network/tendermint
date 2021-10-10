@@ -5,12 +5,12 @@ import (
 	"os"
 	"testing"
 
-	cfg "github.com/tendermint/tendermint/config"
-	"github.com/tendermint/tendermint/crypto/tmhash"
-	tmrand "github.com/tendermint/tendermint/libs/rand"
-	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
-	"github.com/tendermint/tendermint/types"
-	tmtime "github.com/tendermint/tendermint/types/time"
+	cfg "github.com/sisu-network/tendermint/config"
+	"github.com/sisu-network/tendermint/crypto/tmhash"
+	tmrand "github.com/sisu-network/tendermint/libs/rand"
+	tmproto "github.com/sisu-network/tendermint/proto/tendermint/types"
+	"github.com/sisu-network/tendermint/types"
+	tmtime "github.com/sisu-network/tendermint/types/time"
 )
 
 var config *cfg.Config // NOTE: must be reset for each _test.go file

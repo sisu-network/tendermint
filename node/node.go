@@ -17,36 +17,36 @@ import (
 
 	dbm "github.com/tendermint/tm-db"
 
-	abci "github.com/tendermint/tendermint/abci/types"
-	bcv0 "github.com/tendermint/tendermint/blockchain/v0"
-	bcv1 "github.com/tendermint/tendermint/blockchain/v1"
-	bcv2 "github.com/tendermint/tendermint/blockchain/v2"
-	cfg "github.com/tendermint/tendermint/config"
-	cs "github.com/tendermint/tendermint/consensus"
-	"github.com/tendermint/tendermint/crypto"
-	"github.com/tendermint/tendermint/evidence"
-	tmjson "github.com/tendermint/tendermint/libs/json"
-	"github.com/tendermint/tendermint/libs/log"
-	tmpubsub "github.com/tendermint/tendermint/libs/pubsub"
-	"github.com/tendermint/tendermint/libs/service"
-	"github.com/tendermint/tendermint/light"
-	mempl "github.com/tendermint/tendermint/mempool"
-	"github.com/tendermint/tendermint/p2p"
-	"github.com/tendermint/tendermint/p2p/pex"
-	"github.com/tendermint/tendermint/privval"
-	"github.com/tendermint/tendermint/proxy"
-	rpccore "github.com/tendermint/tendermint/rpc/core"
-	grpccore "github.com/tendermint/tendermint/rpc/grpc"
-	rpcserver "github.com/tendermint/tendermint/rpc/jsonrpc/server"
-	sm "github.com/tendermint/tendermint/state"
-	"github.com/tendermint/tendermint/state/txindex"
-	"github.com/tendermint/tendermint/state/txindex/kv"
-	"github.com/tendermint/tendermint/state/txindex/null"
-	"github.com/tendermint/tendermint/statesync"
-	"github.com/tendermint/tendermint/store"
-	"github.com/tendermint/tendermint/types"
-	tmtime "github.com/tendermint/tendermint/types/time"
-	"github.com/tendermint/tendermint/version"
+	abci "github.com/sisu-network/tendermint/abci/types"
+	bcv0 "github.com/sisu-network/tendermint/blockchain/v0"
+	bcv1 "github.com/sisu-network/tendermint/blockchain/v1"
+	bcv2 "github.com/sisu-network/tendermint/blockchain/v2"
+	cfg "github.com/sisu-network/tendermint/config"
+	cs "github.com/sisu-network/tendermint/consensus"
+	"github.com/sisu-network/tendermint/crypto"
+	"github.com/sisu-network/tendermint/evidence"
+	tmjson "github.com/sisu-network/tendermint/libs/json"
+	"github.com/sisu-network/tendermint/libs/log"
+	tmpubsub "github.com/sisu-network/tendermint/libs/pubsub"
+	"github.com/sisu-network/tendermint/libs/service"
+	"github.com/sisu-network/tendermint/light"
+	mempl "github.com/sisu-network/tendermint/mempool"
+	"github.com/sisu-network/tendermint/p2p"
+	"github.com/sisu-network/tendermint/p2p/pex"
+	"github.com/sisu-network/tendermint/privval"
+	"github.com/sisu-network/tendermint/proxy"
+	rpccore "github.com/sisu-network/tendermint/rpc/core"
+	grpccore "github.com/sisu-network/tendermint/rpc/grpc"
+	rpcserver "github.com/sisu-network/tendermint/rpc/jsonrpc/server"
+	sm "github.com/sisu-network/tendermint/state"
+	"github.com/sisu-network/tendermint/state/txindex"
+	"github.com/sisu-network/tendermint/state/txindex/kv"
+	"github.com/sisu-network/tendermint/state/txindex/null"
+	"github.com/sisu-network/tendermint/statesync"
+	"github.com/sisu-network/tendermint/store"
+	"github.com/sisu-network/tendermint/types"
+	tmtime "github.com/sisu-network/tendermint/types/time"
+	"github.com/sisu-network/tendermint/version"
 )
 
 //------------------------------------------------------------------------------
@@ -124,7 +124,7 @@ func DefaultMetricsProvider(config *cfg.InstrumentationConfig) MetricsProvider {
 type Option func(*Node)
 
 // Temporary interface for switching to fast sync, we should get rid of v0 and v1 reactors.
-// See: https://github.com/tendermint/tendermint/issues/4595
+// See: https://github.com/sisu-network/tendermint/issues/4595
 type fastSyncReactor interface {
 	SwitchToFastSync(sm.State) error
 }
@@ -547,7 +547,7 @@ func createPEXReactorAndAddToSwitch(addrBook pex.AddrBook, config *cfg.Config,
 			// blocks assuming 10s blocks ~ 28 hours.
 			// TODO (melekes): make it dynamic based on the actual block latencies
 			// from the live network.
-			// https://github.com/tendermint/tendermint/issues/3523
+			// https://github.com/sisu-network/tendermint/issues/3523
 			SeedDisconnectWaitPeriod:     28 * time.Hour,
 			PersistentPeersMaxDialPeriod: config.P2P.PersistentPeersMaxDialPeriod,
 		})
@@ -743,7 +743,7 @@ func NewNode(config *cfg.Config,
 	// Set up state sync reactor, and schedule a sync if requested.
 	// FIXME The way we do phased startups (e.g. replay -> fast sync -> consensus) is very messy,
 	// we should clean this whole thing up. See:
-	// https://github.com/tendermint/tendermint/issues/4644
+	// https://github.com/sisu-network/tendermint/issues/4644
 	stateSyncReactor := statesync.NewReactor(proxyApp.Snapshot(), proxyApp.Query(),
 		config.StateSync.TempDir)
 	stateSyncReactor.SetLogger(logger.With("module", "statesync"))
@@ -1013,7 +1013,7 @@ func (n *Node) startRPC() ([]net.Listener, error) {
 	config.MaxOpenConnections = n.config.RPC.MaxOpenConnections
 	// If necessary adjust global WriteTimeout to ensure it's greater than
 	// TimeoutBroadcastTxCommit.
-	// See https://github.com/tendermint/tendermint/issues/3435
+	// See https://github.com/sisu-network/tendermint/issues/3435
 	if config.WriteTimeout <= n.config.RPC.TimeoutBroadcastTxCommit {
 		config.WriteTimeout = n.config.RPC.TimeoutBroadcastTxCommit + 1*time.Second
 	}
@@ -1092,7 +1092,7 @@ func (n *Node) startRPC() ([]net.Listener, error) {
 		config.MaxOpenConnections = n.config.RPC.GRPCMaxOpenConnections
 		// If necessary adjust global WriteTimeout to ensure it's greater than
 		// TimeoutBroadcastTxCommit.
-		// See https://github.com/tendermint/tendermint/issues/3435
+		// See https://github.com/sisu-network/tendermint/issues/3435
 		if config.WriteTimeout <= n.config.RPC.TimeoutBroadcastTxCommit {
 			config.WriteTimeout = n.config.RPC.TimeoutBroadcastTxCommit + 1*time.Second
 		}

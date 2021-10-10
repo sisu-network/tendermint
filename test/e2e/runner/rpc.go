@@ -6,10 +6,10 @@ import (
 	"fmt"
 	"time"
 
-	rpchttp "github.com/tendermint/tendermint/rpc/client/http"
-	rpctypes "github.com/tendermint/tendermint/rpc/core/types"
-	e2e "github.com/tendermint/tendermint/test/e2e/pkg"
-	"github.com/tendermint/tendermint/types"
+	rpchttp "github.com/sisu-network/tendermint/rpc/client/http"
+	rpctypes "github.com/sisu-network/tendermint/rpc/core/types"
+	e2e "github.com/sisu-network/tendermint/test/e2e/pkg"
+	"github.com/sisu-network/tendermint/types"
 )
 
 // waitForHeight waits for the network to reach a certain height (or above),

@@ -13,11 +13,11 @@ import (
 	gogotypes "github.com/gogo/protobuf/types"
 	dbm "github.com/tendermint/tm-db"
 
-	clist "github.com/tendermint/tendermint/libs/clist"
-	"github.com/tendermint/tendermint/libs/log"
-	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
-	sm "github.com/tendermint/tendermint/state"
-	"github.com/tendermint/tendermint/types"
+	clist "github.com/sisu-network/tendermint/libs/clist"
+	"github.com/sisu-network/tendermint/libs/log"
+	tmproto "github.com/sisu-network/tendermint/proto/tendermint/types"
+	sm "github.com/sisu-network/tendermint/state"
+	"github.com/sisu-network/tendermint/types"
 )
 
 const (

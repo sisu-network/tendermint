@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"time"
 
-	clist "github.com/tendermint/tendermint/libs/clist"
-	"github.com/tendermint/tendermint/libs/log"
-	"github.com/tendermint/tendermint/p2p"
-	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
-	"github.com/tendermint/tendermint/types"
+	clist "github.com/sisu-network/tendermint/libs/clist"
+	"github.com/sisu-network/tendermint/libs/log"
+	"github.com/sisu-network/tendermint/p2p"
+	tmproto "github.com/sisu-network/tendermint/proto/tendermint/types"
+	"github.com/sisu-network/tendermint/types"
 )
 
 const (

@@ -3,12 +3,12 @@ package mock
 import (
 	"context"
 
-	abci "github.com/tendermint/tendermint/abci/types"
-	"github.com/tendermint/tendermint/libs/bytes"
-	"github.com/tendermint/tendermint/proxy"
-	"github.com/tendermint/tendermint/rpc/client"
-	ctypes "github.com/tendermint/tendermint/rpc/core/types"
-	"github.com/tendermint/tendermint/types"
+	abci "github.com/sisu-network/tendermint/abci/types"
+	"github.com/sisu-network/tendermint/libs/bytes"
+	"github.com/sisu-network/tendermint/proxy"
+	"github.com/sisu-network/tendermint/rpc/client"
+	ctypes "github.com/sisu-network/tendermint/rpc/core/types"
+	"github.com/sisu-network/tendermint/types"
 )
 
 // ABCIApp will send all abci related request to the named app,

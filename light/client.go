@@ -8,12 +8,12 @@ import (
 	"sort"
 	"time"
 
-	"github.com/tendermint/tendermint/libs/log"
-	tmmath "github.com/tendermint/tendermint/libs/math"
-	tmsync "github.com/tendermint/tendermint/libs/sync"
-	"github.com/tendermint/tendermint/light/provider"
-	"github.com/tendermint/tendermint/light/store"
-	"github.com/tendermint/tendermint/types"
+	"github.com/sisu-network/tendermint/libs/log"
+	tmmath "github.com/sisu-network/tendermint/libs/math"
+	tmsync "github.com/sisu-network/tendermint/libs/sync"
+	"github.com/sisu-network/tendermint/light/provider"
+	"github.com/sisu-network/tendermint/light/store"
+	"github.com/sisu-network/tendermint/types"
 )
 
 type mode byte

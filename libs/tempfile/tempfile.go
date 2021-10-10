@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	tmsync "github.com/tendermint/tendermint/libs/sync"
+	tmsync "github.com/sisu-network/tendermint/libs/sync"
 )
 
 const (

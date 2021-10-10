@@ -8,17 +8,17 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/tendermint/tendermint/crypto/tmhash"
+	"github.com/sisu-network/tendermint/crypto/tmhash"
 
-	"github.com/tendermint/tendermint/crypto/ed25519"
-	"github.com/tendermint/tendermint/privval"
-	"github.com/tendermint/tendermint/state"
+	"github.com/sisu-network/tendermint/crypto/ed25519"
+	"github.com/sisu-network/tendermint/privval"
+	"github.com/sisu-network/tendermint/state"
 
-	"github.com/tendermint/tendermint/libs/log"
-	tmnet "github.com/tendermint/tendermint/libs/net"
-	tmos "github.com/tendermint/tendermint/libs/os"
-	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
-	"github.com/tendermint/tendermint/types"
+	"github.com/sisu-network/tendermint/libs/log"
+	tmnet "github.com/sisu-network/tendermint/libs/net"
+	tmos "github.com/sisu-network/tendermint/libs/os"
+	tmproto "github.com/sisu-network/tendermint/proto/tendermint/types"
+	"github.com/sisu-network/tendermint/types"
 )
 
 // Test harness error codes (which act as exit codes when the test harness fails).

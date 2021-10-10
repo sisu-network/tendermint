@@ -14,18 +14,18 @@ import (
 
 	dbm "github.com/tendermint/tm-db"
 
-	abcicli "github.com/tendermint/tendermint/abci/client"
-	abci "github.com/tendermint/tendermint/abci/types"
-	"github.com/tendermint/tendermint/evidence"
-	"github.com/tendermint/tendermint/libs/log"
-	"github.com/tendermint/tendermint/libs/service"
-	tmsync "github.com/tendermint/tendermint/libs/sync"
-	mempl "github.com/tendermint/tendermint/mempool"
-	"github.com/tendermint/tendermint/p2p"
-	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
-	sm "github.com/tendermint/tendermint/state"
-	"github.com/tendermint/tendermint/store"
-	"github.com/tendermint/tendermint/types"
+	abcicli "github.com/sisu-network/tendermint/abci/client"
+	abci "github.com/sisu-network/tendermint/abci/types"
+	"github.com/sisu-network/tendermint/evidence"
+	"github.com/sisu-network/tendermint/libs/log"
+	"github.com/sisu-network/tendermint/libs/service"
+	tmsync "github.com/sisu-network/tendermint/libs/sync"
+	mempl "github.com/sisu-network/tendermint/mempool"
+	"github.com/sisu-network/tendermint/p2p"
+	tmproto "github.com/sisu-network/tendermint/proto/tendermint/types"
+	sm "github.com/sisu-network/tendermint/state"
+	"github.com/sisu-network/tendermint/store"
+	"github.com/sisu-network/tendermint/types"
 )
 
 //----------------------------------------------

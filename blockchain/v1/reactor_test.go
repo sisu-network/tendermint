@@ -13,17 +13,17 @@ import (
 
 	dbm "github.com/tendermint/tm-db"
 
-	abci "github.com/tendermint/tendermint/abci/types"
-	cfg "github.com/tendermint/tendermint/config"
-	"github.com/tendermint/tendermint/libs/log"
-	"github.com/tendermint/tendermint/mempool/mock"
-	"github.com/tendermint/tendermint/p2p"
-	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
-	"github.com/tendermint/tendermint/proxy"
-	sm "github.com/tendermint/tendermint/state"
-	"github.com/tendermint/tendermint/store"
-	"github.com/tendermint/tendermint/types"
-	tmtime "github.com/tendermint/tendermint/types/time"
+	abci "github.com/sisu-network/tendermint/abci/types"
+	cfg "github.com/sisu-network/tendermint/config"
+	"github.com/sisu-network/tendermint/libs/log"
+	"github.com/sisu-network/tendermint/mempool/mock"
+	"github.com/sisu-network/tendermint/p2p"
+	tmproto "github.com/sisu-network/tendermint/proto/tendermint/types"
+	"github.com/sisu-network/tendermint/proxy"
+	sm "github.com/sisu-network/tendermint/state"
+	"github.com/sisu-network/tendermint/store"
+	"github.com/sisu-network/tendermint/types"
+	tmtime "github.com/sisu-network/tendermint/types/time"
 )
 
 var config *cfg.Config

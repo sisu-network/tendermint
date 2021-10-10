@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/tendermint/tendermint/libs/bits"
-	tmjson "github.com/tendermint/tendermint/libs/json"
-	tmsync "github.com/tendermint/tendermint/libs/sync"
-	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
+	"github.com/sisu-network/tendermint/libs/bits"
+	tmjson "github.com/sisu-network/tendermint/libs/json"
+	tmsync "github.com/sisu-network/tendermint/libs/sync"
+	tmproto "github.com/sisu-network/tendermint/proto/tendermint/types"
 )
 
 const (

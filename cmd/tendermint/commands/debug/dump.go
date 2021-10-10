@@ -11,9 +11,9 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
-	cfg "github.com/tendermint/tendermint/config"
-	"github.com/tendermint/tendermint/libs/cli"
-	rpchttp "github.com/tendermint/tendermint/rpc/client/http"
+	cfg "github.com/sisu-network/tendermint/config"
+	"github.com/sisu-network/tendermint/libs/cli"
+	rpchttp "github.com/sisu-network/tendermint/rpc/client/http"
 )
 
 var dumpCmd = &cobra.Command{

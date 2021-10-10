@@ -8,10 +8,10 @@ import (
 
 	"golang.org/x/net/netutil"
 
-	"github.com/tendermint/tendermint/crypto"
-	"github.com/tendermint/tendermint/libs/protoio"
-	"github.com/tendermint/tendermint/p2p/conn"
-	tmp2p "github.com/tendermint/tendermint/proto/tendermint/p2p"
+	"github.com/sisu-network/tendermint/crypto"
+	"github.com/sisu-network/tendermint/libs/protoio"
+	"github.com/sisu-network/tendermint/p2p/conn"
+	tmp2p "github.com/sisu-network/tendermint/proto/tendermint/p2p"
 )
 
 const (
@@ -281,7 +281,7 @@ func (mt *MultiplexTransport) acceptPeers() {
 
 		// Connection upgrade and filtering should be asynchronous to avoid
 		// Head-of-line blocking[0].
-		// Reference:  https://github.com/tendermint/tendermint/issues/2047
+		// Reference:  https://github.com/sisu-network/tendermint/issues/2047
 		//
 		// [0] https://en.wikipedia.org/wiki/Head-of-line_blocking
 		go func(c net.Conn) {

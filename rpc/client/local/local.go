@@ -5,16 +5,16 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/tendermint/tendermint/libs/bytes"
-	"github.com/tendermint/tendermint/libs/log"
-	tmpubsub "github.com/tendermint/tendermint/libs/pubsub"
-	tmquery "github.com/tendermint/tendermint/libs/pubsub/query"
-	nm "github.com/tendermint/tendermint/node"
-	rpcclient "github.com/tendermint/tendermint/rpc/client"
-	"github.com/tendermint/tendermint/rpc/core"
-	ctypes "github.com/tendermint/tendermint/rpc/core/types"
-	rpctypes "github.com/tendermint/tendermint/rpc/jsonrpc/types"
-	"github.com/tendermint/tendermint/types"
+	"github.com/sisu-network/tendermint/libs/bytes"
+	"github.com/sisu-network/tendermint/libs/log"
+	tmpubsub "github.com/sisu-network/tendermint/libs/pubsub"
+	tmquery "github.com/sisu-network/tendermint/libs/pubsub/query"
+	nm "github.com/sisu-network/tendermint/node"
+	rpcclient "github.com/sisu-network/tendermint/rpc/client"
+	"github.com/sisu-network/tendermint/rpc/core"
+	ctypes "github.com/sisu-network/tendermint/rpc/core/types"
+	rpctypes "github.com/sisu-network/tendermint/rpc/jsonrpc/types"
+	"github.com/sisu-network/tendermint/types"
 )
 
 /*
