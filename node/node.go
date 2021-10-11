@@ -30,6 +30,7 @@ import (
 	tmpubsub "github.com/sisu-network/tendermint/libs/pubsub"
 	"github.com/sisu-network/tendermint/libs/service"
 	"github.com/sisu-network/tendermint/light"
+	"github.com/sisu-network/tendermint/mempool"
 	mempl "github.com/sisu-network/tendermint/mempool"
 	"github.com/sisu-network/tendermint/p2p"
 	"github.com/sisu-network/tendermint/p2p/pex"
@@ -1215,6 +1216,11 @@ func (n *Node) IsListening() bool {
 // NodeInfo returns the Node's Info from the Switch.
 func (n *Node) NodeInfo() p2p.NodeInfo {
 	return n.nodeInfo
+}
+
+// MODIFIED
+func (n *Node) SetPreAddTxFunc(f mempool.PreAddTxToMempoolFunc) {
+	n.mempool.SetPreAddTxToMempoolFunc(f)
 }
 
 func makeNodeInfo(

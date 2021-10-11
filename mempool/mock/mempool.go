@@ -3,6 +3,7 @@ package mock
 import (
 	abci "github.com/sisu-network/tendermint/abci/types"
 	"github.com/sisu-network/tendermint/libs/clist"
+	"github.com/sisu-network/tendermint/mempool"
 	mempl "github.com/sisu-network/tendermint/mempool"
 	"github.com/sisu-network/tendermint/types"
 )
@@ -38,5 +39,6 @@ func (Mempool) TxsBytes() int64               { return 0 }
 func (Mempool) TxsFront() *clist.CElement    { return nil }
 func (Mempool) TxsWaitChan() <-chan struct{} { return nil }
 
-func (Mempool) InitWAL() error { return nil }
-func (Mempool) CloseWAL()      {}
+func (Mempool) InitWAL() error                                           { return nil }
+func (Mempool) CloseWAL()                                                {}
+func (Mempool) SetPreAddTxToMempoolFunc(f mempool.PreAddTxToMempoolFunc) {}

@@ -76,6 +76,9 @@ type Mempool interface {
 	// CloseWAL closes and discards the underlying WAL file.
 	// Any further writes will not be relayed to disk.
 	CloseWAL()
+
+	// MODIFIED:
+	SetPreAddTxToMempoolFunc(f PreAddTxToMempoolFunc)
 }
 
 //--------------------------------------------------------------------------------
@@ -89,6 +92,11 @@ type PreCheckFunc func(types.Tx) error
 // transaction if false is returned. An example would be to ensure a
 // transaction doesn't require more gas than available for the block.
 type PostCheckFunc func(types.Tx, *abci.ResponseCheckTx) error
+
+// MODIFIED: Only used by Sisu
+// Called right before a transaction is added into a mempool. This is to avoid multiple same tx
+// are added into the mempool.
+type PreAddTxToMempoolFunc func(types.Tx) error
 
 // TxInfo are parameters that get passed when attempting to add a tx to the
 // mempool.

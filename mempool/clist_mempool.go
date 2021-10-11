@@ -49,6 +49,7 @@ type CListMempool struct {
 	updateMtx tmsync.RWMutex
 	preCheck  PreCheckFunc
 	postCheck PostCheckFunc
+	preAddTx  PreAddTxToMempoolFunc
 
 	wal          *auto.AutoFile // a log of mempool txs
 	txs          *clist.CList   // concurrent linked-list of good txs
@@ -115,6 +116,10 @@ func (mem *CListMempool) EnableTxsAvailable() {
 // SetLogger sets the Logger.
 func (mem *CListMempool) SetLogger(l log.Logger) {
 	mem.logger = l
+}
+
+func (mem *CListMempool) SetPreAddTxToMempoolFunc(f PreAddTxToMempoolFunc) {
+	mem.preAddTx = f
 }
 
 // WithPreCheck sets a filter for the mempool to reject a tx if f(tx) returns
