@@ -26,7 +26,7 @@ type Vote struct {
 }
 ```
 
-The original tracking issue for this is [#1648](https://github.com/tendermint/tendermint/issues/1648).
+The original tracking issue for this is [#1648](https://github.com/sisu-network/tendermint/issues/1648).
 We have discussed replacing the `Vote` type in `Commit` with a new `CommitSig`
 type, which includes at minimum the vote signature. The `Vote` type will
 continue to be used in the consensus reactor and elsewhere.
@@ -34,20 +34,19 @@ continue to be used in the consensus reactor and elsewhere.
 A primary question is what should be included in the `CommitSig` beyond the
 signature. One current constraint is that we must include a timestamp, since
 this is how we calculuate BFT time, though we may be able to change this [in the
-future](https://github.com/tendermint/tendermint/issues/2840).
+future](https://github.com/sisu-network/tendermint/issues/2840).
 
 Other concerns here include:
 
-- Validator Address [#3596](https://github.com/tendermint/tendermint/issues/3596) -
-    Should the CommitSig include the validator address? It is very convenient to
-    do so, but likely not necessary. This was also discussed in [#2226](https://github.com/tendermint/tendermint/issues/2226).
-- Absent Votes [#3591](https://github.com/tendermint/tendermint/issues/3591) -
-    How to represent absent votes? Currently they are just present as `nil` in the
-    Precommits list, which is actually problematic for serialization
-- Other BlockIDs [#3485](https://github.com/tendermint/tendermint/issues/3485) -
-    How to represent votes for nil and for other block IDs? We currently allow
-    votes for nil and votes for alternative block ids, but just ignore them
-
+- Validator Address [#3596](https://github.com/sisu-network/tendermint/issues/3596) -
+  Should the CommitSig include the validator address? It is very convenient to
+  do so, but likely not necessary. This was also discussed in [#2226](https://github.com/sisu-network/tendermint/issues/2226).
+- Absent Votes [#3591](https://github.com/sisu-network/tendermint/issues/3591) -
+  How to represent absent votes? Currently they are just present as `nil` in the
+  Precommits list, which is actually problematic for serialization
+- Other BlockIDs [#3485](https://github.com/sisu-network/tendermint/issues/3485) -
+  How to represent votes for nil and for other block IDs? We currently allow
+  votes for nil and votes for alternative block ids, but just ignore them
 
 ## Decision
 
@@ -86,7 +85,7 @@ Re the concerns outlined in the context:
 proposer based time will take more analysis and work, and will be left for a
 future breaking change. In the meantime, the concerns with the current approach to
 BFT time [can be
-mitigated](https://github.com/tendermint/tendermint/issues/2840#issuecomment-529122431).
+mitigated](https://github.com/sisu-network/tendermint/issues/2840#issuecomment-529122431).
 
 **ValidatorAddress**: we include it in the `CommitSig` for now. While this
 does increase the block size unecessarily (20-bytes per validator), it has some ergonomic and debugging advantages:
@@ -105,17 +104,14 @@ Timestamp but with the ValidatorAddress. This should resolve the serialization
 issues and make it easy to see which validator's votes failed to be included.
 
 **Other BlockIDs**: We use a single byte to indicate which blockID a `CommitSig`
-is for. The only options are:
-    - `Absent` - no vote received from the this validator, so no signature
-    - `Nil` - validator voted Nil - meaning they did not see a polka in time
-    - `Commit` - validator voted for this block
+is for. The only options are: - `Absent` - no vote received from the this validator, so no signature - `Nil` - validator voted Nil - meaning they did not see a polka in time - `Commit` - validator voted for this block
 
 Note this means we don't allow votes for any other blockIDs. If a signature is
 included in a commit, it is either for nil or the correct blockID. According to
 the Tendermint protocol and assumptions, there is no way for a correct validator to
 precommit for a conflicting blockID in the same round an actual commit was
 created. This was the consensus from
-[#3485](https://github.com/tendermint/tendermint/issues/3485)
+[#3485](https://github.com/sisu-network/tendermint/issues/3485)
 
 We may want to consider supporting other blockIDs later, as a way to capture
 evidence that might be helpful. We should clarify if/when/how doing so would
@@ -138,7 +134,6 @@ It varies because some integers are varint. The BlockID contains two 32-byte has
 and the Height is 8-bytes.
 
 For a chain with 100 validators, that's up to 8kB in savings per block!
-
 
 ### Negative
 

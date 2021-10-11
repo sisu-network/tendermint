@@ -10,14 +10,14 @@ main Tendermint project, the following process leads to the best chance of
 landing changes in master.
 
 All work on the code base should be motivated by a [Github
-Issue](https://github.com/tendermint/tendermint/issues).
-[Search](https://github.com/tendermint/tendermint/issues?q=is%3Aopen+is%3Aissue+label%3A%22help+wanted%22)
+Issue](https://github.com/sisu-network/tendermint/issues).
+[Search](https://github.com/sisu-network/tendermint/issues?q=is%3Aopen+is%3Aissue+label%3A%22help+wanted%22)
 is a good place start when looking for places to contribute. If you
 would like to work on an issue which already exists, please indicate so
 by leaving a comment.
 
 All new contributions should start with a [Github
-Issue](https://github.com/tendermint/tendermint/issues/new/choose). The
+Issue](https://github.com/sisu-network/tendermint/issues/new/choose). The
 issue helps capture the problem you're trying to solve and allows for
 early feedback. Once the issue is created the process can proceed in different
 directions depending on how well defined the problem and potential
@@ -62,12 +62,12 @@ Please note that Go requires code to live under absolute paths, which complicate
 While my fork lives at `https://github.com/ebuchman/tendermint`,
 the code should never exist at `$GOPATH/src/github.com/ebuchman/tendermint`.
 Instead, we use `git remote` to add the fork as a new remote for the original repo,
-`$GOPATH/src/github.com/tendermint/tendermint`, and do all the work there.
+`$GOPATH/src/github.com/sisu-network/tendermint`, and do all the work there.
 
 For instance, to create a fork and work on a branch of it, I would:
 
 - Create the fork on GitHub, using the fork button.
-- Go to the original repo checked out locally (i.e. `$GOPATH/src/github.com/tendermint/tendermint`)
+- Go to the original repo checked out locally (i.e. `$GOPATH/src/github.com/sisu-network/tendermint`)
 - `git remote rename origin upstream`
 - `git remote add origin git@github.com:ebuchman/basecoin.git`
 
@@ -173,7 +173,7 @@ easy to reference the pull request where a change was introduced.
 
 The latest state of development is on `master`, which must never fail `make test`. _Never_ force push `master`, unless fixing broken git history (which we rarely do anyways).
 
-To begin contributing, create a development branch either on `github.com/tendermint/tendermint`, or your fork (using `git remote add origin`).
+To begin contributing, create a development branch either on `github.com/sisu-network/tendermint`, or your fork (using `git remote add origin`).
 
 Make changes, and before submitting a pull request, update the `CHANGELOG_PENDING.md` to record your change. Also, run either `git rebase` or `git merge` on top of the latest `master`. (Since pull requests are squash-merged, either is fine!)
 
@@ -233,14 +233,14 @@ Each PR should have one commit once it lands on `master`; this can be accomplish
 2. Run integration tests (see `test_integrations` in Makefile)
 3. Prepare release in a pull request against `master` (to be squash merged):
    - Copy `CHANGELOG_PENDING.md` to top of `CHANGELOG.md`; if this release
-      had release candidates, squash all the RC updates into one
+     had release candidates, squash all the RC updates into one
    - Run `python ./scripts/linkify_changelog.py CHANGELOG.md` to add links for
      all issues
    - run `bash ./scripts/authors.sh` to get a list of authors since the latest
      release, and add the github aliases of external contributors to the top of
      the changelog. To lookup an alias from an email, try `bash ./scripts/authors.sh <email>`
    - Reset the `CHANGELOG_PENDING.md`
-   - Bump P2P and block protocol versions in  `version.go`, if necessary
+   - Bump P2P and block protocol versions in `version.go`, if necessary
    - Bump ABCI protocol version in `version.go`, if necessary
    - Make sure all significant breaking changes are covered in `UPGRADING.md`
    - Add any release notes you would like to be added to the body of the release to `release_notes.md`.
@@ -261,7 +261,7 @@ Minor releases are done differently from major releases: They are built off of l
    - run `python ./scripts/linkify_changelog.py CHANGELOG.md` to add links for all issues
    - run `bash ./scripts/authors.sh` to get a list of authors since the latest release, and add the GitHub aliases of external contributors to the top of the CHANGELOG. To lookup an alias from an email, try `bash ./scripts/authors.sh <email>`
    - reset the `CHANGELOG_PENDING.md`
-   - bump P2P and block protocol versions in  `version.go`, if necessary
+   - bump P2P and block protocol versions in `version.go`, if necessary
    - bump ABCI protocol version in `version.go`, if necessary
    - make sure all significant breaking changes are covered in `UPGRADING.md`
    - Add any release notes you would like to be added to the body of the release to `release_notes.md`.
@@ -299,12 +299,12 @@ the "standard" release naming conventions, with `-rcX` at the end (`vX.X.X-rcX`)
 have distinct names from the tags/release names.)
 
 1. Start from the RC branch (e.g. `RC0/v0.34.0`).
-2. Create the new tag, specifying a name and a tag "message":  
-   `git tag -a v0.34.0-rc0 -m "Release Candidate v0.34.0-rc0` 
-3. Push the tag back up to origin:  
-   `git push origin v0.34.0-rc4`  
-   Now the tag should be available on the repo's releases page. 
-4. Create a new release candidate branch for any possible updates to the RC:  
+2. Create the new tag, specifying a name and a tag "message":
+   `git tag -a v0.34.0-rc0 -m "Release Candidate v0.34.0-rc0`
+3. Push the tag back up to origin:
+   `git push origin v0.34.0-rc4`
+   Now the tag should be available on the repo's releases page.
+4. Create a new release candidate branch for any possible updates to the RC:
    `git checkout -b RC1/v0.34.0; git push origin RC1/v0.34.0`
 
 ## Testing
@@ -350,8 +350,8 @@ See [README](./test/maverick/README.md) for details.
 
 ### Model-based tests (ADVANCED)
 
-*NOTE: if you're just submitting your first PR, you won't need to touch these
-most probably (99.9%)*.
+_NOTE: if you're just submitting your first PR, you won't need to touch these
+most probably (99.9%)_.
 
 For components, that have been [formally
 verified](https://en.wikipedia.org/wiki/Formal_verification) using
@@ -371,8 +371,8 @@ Run: `cd light/mbt && go test`
 
 ### Fuzz tests (ADVANCED)
 
-*NOTE: if you're just submitting your first PR, you won't need to touch these
-most probably (99.9%)*.
+_NOTE: if you're just submitting your first PR, you won't need to touch these
+most probably (99.9%)_.
 
 [Fuzz tests](https://en.wikipedia.org/wiki/Fuzzing) can be found inside the
 `./test/fuzz` directory. See [README.md](./test/fuzz/README.md) for details.
@@ -381,8 +381,8 @@ Run: `cd test/fuzz && make fuzz-{PACKAGE-COMPONENT}`
 
 ### Jepsen tests (ADVANCED)
 
-*NOTE: if you're just submitting your first PR, you won't need to touch these
-most probably (99.9%)*.
+_NOTE: if you're just submitting your first PR, you won't need to touch these
+most probably (99.9%)_.
 
 [Jepsen](http://jepsen.io/) tests are used to verify the
 [linearizability](https://jepsen.io/consistency/models/linearizable) property

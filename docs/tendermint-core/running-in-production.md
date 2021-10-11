@@ -135,9 +135,9 @@ command will scrap all the available info and kill the process. See
 [Debugging](../tools/debugging.md) for the exact format.
 
 You can inspect the resulting archive yourself or create an issue on
-[Github](https://github.com/tendermint/tendermint). Before opening an issue
+[Github](https://github.com/sisu-network/tendermint). Before opening an issue
 however, be sure to check if there's [no existing
-issue](https://github.com/tendermint/tendermint/issues) already.
+issue](https://github.com/sisu-network/tendermint/issues) already.
 
 ## Monitoring Tendermint
 
@@ -210,33 +210,33 @@ Recovering from data corruption can be hard and time-consuming. Here are two app
 
 1) Create a backup of the corrupted WAL file:
 
-    ```sh
-    cp "$TMHOME/data/cs.wal/wal" > /tmp/corrupted_wal_backup
-    ```
+   ```sh
+   cp "$TMHOME/data/cs.wal/wal" > /tmp/corrupted_wal_backup
+   ```
 
 2) Use `./scripts/wal2json` to create a human-readable version:
 
-    ```sh
-    ./scripts/wal2json/wal2json "$TMHOME/data/cs.wal/wal" > /tmp/corrupted_wal
-    ```
+   ```sh
+   ./scripts/wal2json/wal2json "$TMHOME/data/cs.wal/wal" > /tmp/corrupted_wal
+   ```
 
-3)  Search for a "CORRUPTED MESSAGE" line.
-4)  By looking at the previous message and the message after the corrupted one
+3) Search for a "CORRUPTED MESSAGE" line.
+4) By looking at the previous message and the message after the corrupted one
    and looking at the logs, try to rebuild the message. If the consequent
    messages are marked as corrupted too (this may happen if length header
    got corrupted or some writes did not make it to the WAL ~ truncation),
    then remove all the lines starting from the corrupted one and restart
    Tendermint.
 
-    ```sh
-    $EDITOR /tmp/corrupted_wal
-    ```
+   ```sh
+   $EDITOR /tmp/corrupted_wal
+   ```
 
-5)  After editing, convert this file back into binary form by running:
+5) After editing, convert this file back into binary form by running:
 
-    ```sh
-    ./scripts/json2wal/json2wal /tmp/corrupted_wal  $TMHOME/data/cs.wal/wal
-    ```
+   ```sh
+   ./scripts/json2wal/json2wal /tmp/corrupted_wal  $TMHOME/data/cs.wal/wal
+   ```
 
 ## Hardware
 
@@ -259,7 +259,7 @@ Recommended:
 
 While for now, Tendermint stores all the history and it may require significant
 disk space over time, we are planning to implement state syncing (See [this
-issue](https://github.com/tendermint/tendermint/issues/828)). So, storing all
+issue](https://github.com/sisu-network/tendermint/issues/828)). So, storing all
 the past blocks will not be necessary.
 
 ### Validator signing on 32 bit architectures (or ARM)
@@ -350,7 +350,7 @@ proposing the next block).
 By default, Tendermint checks whenever a peer's address is routable before
 saving it to the address book. The address is considered as routable if the IP
 is [valid and within allowed
-ranges](https://github.com/tendermint/tendermint/blob/27bd1deabe4ba6a2d9b463b8f3e3f1e31b993e61/p2p/netaddress.go#L209).
+ranges](https://github.com/sisu-network/tendermint/blob/27bd1deabe4ba6a2d9b463b8f3e3f1e31b993e61/p2p/netaddress.go#L209).
 
 This may not be the case for private or local networks, where your IP range is usually
 strictly limited and private. If that case, you need to set `addr_book_strict`
@@ -371,20 +371,22 @@ The process file limits must also be increased, e.g. via `ulimit -n 8192`.
 ...for N connections, such as 50k:
 
 ```md
-kern.maxfiles=10000+2*N         # BSD
-kern.maxfilesperproc=100+2*N    # BSD
-kern.ipc.maxsockets=10000+2*N   # BSD
-fs.file-max=10000+2*N           # Linux
-net.ipv4.tcp_max_orphans=N      # Linux
+kern.maxfiles=10000+2*N # BSD
+kern.maxfilesperproc=100+2*N # BSD
+kern.ipc.maxsockets=10000+2*N # BSD
+fs.file-max=10000+2*N # Linux
+net.ipv4.tcp_max_orphans=N # Linux
 
 # For load-generating clients.
-net.ipv4.ip_local_port_range="10000  65535"  # Linux.
-net.inet.ip.portrange.first=10000  # BSD/Mac.
-net.inet.ip.portrange.last=65535   # (Enough for N < 55535)
-net.ipv4.tcp_tw_reuse=1         # Linux
-net.inet.tcp.maxtcptw=2*N       # BSD
+
+net.ipv4.ip_local_port_range="10000 65535" # Linux.
+net.inet.ip.portrange.first=10000 # BSD/Mac.
+net.inet.ip.portrange.last=65535 # (Enough for N < 55535)
+net.ipv4.tcp_tw_reuse=1 # Linux
+net.inet.tcp.maxtcptw=2\*N # BSD
 
 # If using netfilter on Linux:
+
 net.netfilter.nf_conntrack_max=N
 echo $((N/8)) > /sys/module/nf_conntrack/parameters/hashsize
 ```

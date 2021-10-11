@@ -84,7 +84,7 @@ Hello, Tendermint Core
 
 Tendermint Core communicates with the application through the Application
 BlockChain Interface (ABCI). All message types are defined in the [protobuf
-file](https://github.com/tendermint/tendermint/blob/master/proto/tendermint/abci/types.proto).
+file](https://github.com/sisu-network/tendermint/blob/master/proto/tendermint/abci/types.proto).
 This allows Tendermint Core to run applications written in any programming
 language.
 
@@ -94,7 +94,7 @@ Create a file called `app.go` with the following content:
 package main
 
 import (
-	abcitypes "github.com/tendermint/tendermint/abci/types"
+	abcitypes "github.com/sisu-network/tendermint/abci/types"
 )
 
 type KVStoreApplication struct {}
@@ -304,7 +304,7 @@ the application's `Query` method.
 
 Applications are free to provide their own APIs. But by using Tendermint Core
 as a proxy, clients (including [light client
-package](https://godoc.org/github.com/tendermint/tendermint/light)) can leverage
+package](https://godoc.org/github.com/sisu-network/tendermint/light)) can leverage
 the unified API across different applications. Plus they won't have to call the
 otherwise separate Tendermint Core API for additional proofs.
 
@@ -358,14 +358,14 @@ import (
 	"github.com/dgraph-io/badger"
 	"github.com/spf13/viper"
 
-	abci "github.com/tendermint/tendermint/abci/types"
-	cfg "github.com/tendermint/tendermint/config"
-	tmflags "github.com/tendermint/tendermint/libs/cli/flags"
-	"github.com/tendermint/tendermint/libs/log"
-	nm "github.com/tendermint/tendermint/node"
-	"github.com/tendermint/tendermint/p2p"
-	"github.com/tendermint/tendermint/privval"
-	"github.com/tendermint/tendermint/proxy"
+	abci "github.com/sisu-network/tendermint/abci/types"
+	cfg "github.com/sisu-network/tendermint/config"
+	tmflags "github.com/sisu-network/tendermint/libs/cli/flags"
+	"github.com/sisu-network/tendermint/libs/log"
+	nm "github.com/sisu-network/tendermint/node"
+	"github.com/sisu-network/tendermint/p2p"
+	"github.com/sisu-network/tendermint/privval"
+	"github.com/sisu-network/tendermint/proxy"
 )
 
 var configFile string
@@ -586,7 +586,7 @@ dependency management.
 
 ```bash
 go mod init github.com/me/example
-go get github.com/tendermint/tendermint/@v0.34.0
+go get github.com/sisu-network/tendermint/@v0.34.0
 ```
 
 After running the above commands you will see two generated files, go.mod and go.sum. The go.mod file should look similar to:
@@ -598,7 +598,7 @@ go 1.15
 
 require (
 	github.com/dgraph-io/badger v1.6.2
-	github.com/tendermint/tendermint v0.34.0
+	github.com/sisu-network/tendermint v0.34.0
 )
 ```
 
@@ -680,5 +680,5 @@ $ curl -s 'localhost:26657/abci_query?data="tendermint"'
 
 I hope everything went smoothly and your first, but hopefully not the last,
 Tendermint Core application is up and running. If not, please [open an issue on
-Github](https://github.com/tendermint/tendermint/issues/new/choose). To dig
+Github](https://github.com/sisu-network/tendermint/issues/new/choose). To dig
 deeper, read [the docs](https://docs.tendermint.com/master/).

@@ -1,8 +1,9 @@
 # ADR 044: Lite Client with Weak Subjectivity
 
 ## Changelog
-* 13-07-2019: Initial draft
-* 14-08-2019: Address cwgoes comments
+
+- 13-07-2019: Initial draft
+- 14-08-2019: Address cwgoes comments
 
 ## Context
 
@@ -32,13 +33,13 @@ fork the network at some point in its prior history. See Vitalik’s post at
 Subjectivity](https://blog.ethereum.org/2014/11/25/proof-stake-learned-love-weak-subjectivity/).
 
 Currently, Tendermint provides a lite client implementation in the
-[light](https://github.com/tendermint/tendermint/tree/master/light) package. This
+[light](https://github.com/sisu-network/tendermint/tree/master/light) package. This
 lite client implements a bisection algorithm that tries to use a binary search
 to find the minimum number of block headers where the validator set voting
 power changes are less than < 1/3rd. This interface does not support weak
 subjectivity at this time. The Cosmos SDK also does not support counterfactual
 slashing, nor does the lite client have any capacity to report evidence making
-these systems *theoretically unsafe*.
+these systems _theoretically unsafe_.
 
 NOTE: Tendermint provides a somewhat different (stronger) light client model
 than Bitcoin under eclipse, since the eclipsing node(s) can only fool the light
@@ -94,7 +95,7 @@ in the most optimistic case requires a light client to only download two block
 headers to come into synchronization.
 
 The bisection algorithm proceeds in the following fashion. The client downloads
-and verifies the full block header for `TrustHeight` and then  fetches
+and verifies the full block header for `TrustHeight` and then fetches
 `LatestHeight` blocker header. The client then verifies the `LatestHeight`
 header. Finally the client attempts to verify the `LatestHeight` header with
 voting powers taken from `NextValidatorSet` in the `TrustHeight` header. This
@@ -106,7 +107,7 @@ executed.
 The Client tries to download the block at the mid-point block between
 `LatestHeight` and `TrustHeight` and attempts that same algorithm as above
 using `MidPointHeight` instead of `LatestHeight` and a different threshold -
-1/3 +1 of voting power for *non-adjacent headers*. In the case the of failure,
+1/3 +1 of voting power for _non-adjacent headers_. In the case the of failure,
 recursively perform the `MidPoint` verification until success then start over
 with an updated `NextValidatorSet` and `TrustHeight`.
 
@@ -129,13 +130,13 @@ Accepted.
 
 ### Positive
 
-* light client which is safe to use (it can go offline, but not for too long)
+- light client which is safe to use (it can go offline, but not for too long)
 
 ### Negative
 
-* complexity of bisection
+- complexity of bisection
 
 ### Neutral
 
-* social consensus can be prone to errors (for cases where a new light client
+- social consensus can be prone to errors (for cases where a new light client
   joins a network or it has been offline for too long)

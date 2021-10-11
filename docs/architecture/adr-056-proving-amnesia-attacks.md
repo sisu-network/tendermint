@@ -23,13 +23,11 @@ The currently only known form of global evidence stems from [flip flopping](http
 4. C2 and F then send PRECOMMIT messages for block B.
 5. F breaks the lock and goes back and sends PRECOMMIT messages in round 1 for block A.
 
-
-This creates a fork on the main chain.  Back to the past, another form of flip flopping, creates a light fork (capable of fooling those not involved in consensus). This is done in a similar fashion to the schematic above, however the validators C1 eventually progress and commit the block in Round 2 and then when a light client comes to validate the block at that height, the nodes take the precommits for Round 1 and forge their own precommits to produce what looks like a valid block for the light client.
-
+This creates a fork on the main chain. Back to the past, another form of flip flopping, creates a light fork (capable of fooling those not involved in consensus). This is done in a similar fashion to the schematic above, however the validators C1 eventually progress and commit the block in Round 2 and then when a light client comes to validate the block at that height, the nodes take the precommits for Round 1 and forge their own precommits to produce what looks like a valid block for the light client.
 
 ## Pretext
 
-An amnesia protocol was outlined in a previous revision of this ADR and for completeness has been appeneded at the bottom (Appendix A). However, under the circumstances of the impending IBC release it was adjudged that the protocol hadn't received enough rigour and could be potentially liable for opening other forms of misbehaviour especially considering that the nature of the protocol deemed all the nodes that committed for a certain block guilty until they proved their innocence. 
+An amnesia protocol was outlined in a previous revision of this ADR and for completeness has been appeneded at the bottom (Appendix A). However, under the circumstances of the impending IBC release it was adjudged that the protocol hadn't received enough rigour and could be potentially liable for opening other forms of misbehaviour especially considering that the nature of the protocol deemed all the nodes that committed for a certain block guilty until they proved their innocence.
 
 ## Decision
 
@@ -45,7 +43,7 @@ The first part of this short term solution is the `PotentialAmnesiaEvidence` dat
 - It can be submitted on the chain
 - It does, by itself, not indicate which validators in the set misbehaved and should be slashed. It is merely a prompt for manual investigation.
 
-Before going any further, it is also important to mention that `PotentialAmnesiaEvidence` should only be formed from a valid attack on the light client and measures should be put in place to ensure that no node can easily forge the evidence as a means of spamming the network. 
+Before going any further, it is also important to mention that `PotentialAmnesiaEvidence` should only be formed from a valid attack on the light client and measures should be put in place to ensure that no node can easily forge the evidence as a means of spamming the network.
 
 The data structure for `PotentialAmensiaEvidence` is as follows:
 
@@ -75,7 +73,6 @@ It conforms to the `Evidence` interface where `Time()` is the time of the heaer 
 
 - The evidence must not have expired.
 
-
 The second part of the short term solution is saving `VoteSet`'s to the evidence pool. In order to avoid overflowing the validators memory, only the relevant information will be taken from the voteSets and formed into
 this specific struct
 
@@ -85,8 +82,8 @@ type VotesRecord struct {
 }
 ```
 
-These votes should all be precommit votes of the same height and round and will come from the consensus reactor. `VotesRecord` will only be created in heights where there are more than 1 round and will be sent from consensus. 
-`VotesRecord` will also follow the same pruning algorithm as the rest of the evidence, being removed after expiring. 
+These votes should all be precommit votes of the same height and round and will come from the consensus reactor. `VotesRecord` will only be created in heights where there are more than 1 round and will be sent from consensus.
+`VotesRecord` will also follow the same pruning algorithm as the rest of the evidence, being removed after expiring.
 
 Implementing this is in the short term should be sufficient to detecting amnesia attacks using manual intervention which through off-chain conesnsus can lead to punishment and thus in itself act to disincentivise misbehaviour.
 
@@ -108,7 +105,6 @@ A delay between the detection of a fork and the punishment of one
 
 ### Neutral
 
-
 ## References
 
 - [Fork accountability algorithm](https://docs.google.com/document/d/11ZhMsCj3y7zIZz4udO9l25xqb0kl7gmWqNpGVRzOeyY/edit)
@@ -120,7 +116,7 @@ As the distinction between these two attacks (amnesia and back to the past) can 
 
 Currently, the evidence reactor is used to simply broadcast and store evidence. The idea of creating a new reactor for the specific task of verifying these attacks was briefly discussed, but it is decided that the current evidence reactor will be extended.
 
-The process begins with a light client receiving conflicting headers (in the future this could also be a full node during fast sync or state sync), which it sends to a full node to analyse. As part of [evidence handling](https://github.com/tendermint/tendermint/blob/master/docs/architecture/adr-047-handling-evidence-from-light-client.md), this is extracted into potential amnesia evidence when the validator voted in more than one round for a different block.
+The process begins with a light client receiving conflicting headers (in the future this could also be a full node during fast sync or state sync), which it sends to a full node to analyse. As part of [evidence handling](https://github.com/sisu-network/tendermint/blob/master/docs/architecture/adr-047-handling-evidence-from-light-client.md), this is extracted into potential amnesia evidence when the validator voted in more than one round for a different block.
 
 ```golang
 type PotentialAmnesiaEvidence struct {
@@ -131,7 +127,7 @@ type PotentialAmnesiaEvidence struct {
 }
 ```
 
-*NOTE: There had been an earlier notion towards batching evidence against the entire set of validators all together but this has given way to individual processing predominantly to maintain consistency with the other forms of evidence. A more extensive breakdown can be found [here](https://github.com/tendermint/tendermint/issues/4729)*
+_NOTE: There had been an earlier notion towards batching evidence against the entire set of validators all together but this has given way to individual processing predominantly to maintain consistency with the other forms of evidence. A more extensive breakdown can be found [here](https://github.com/sisu-network/tendermint/issues/4729)_
 
 The evidence will contain the precommit votes for a validator that voted for both rounds. If the validator voted in more than two rounds, then they will have multiple `PotentialAmnesiaEvidence` against them hence it is possible that there is multiple evidence for a validator in a single height but not for a single round. The votes should be all valid and the height and time that the infringement was made should be within:
 
@@ -170,8 +166,8 @@ There can only be one `AmnesiaEvidence` and one `PotentialAmneisaEvidence` store
 
 When, `state.LastBlockHeight > PotentialAmnesiaEvidence.timestamp + ProofTrialPeriod`, nodes will upgrade the corresponding `PotentialAmnesiaEvidence` and attach an empty `ProofOfLockChange`. Then honest validators of the current validator set can begin proposing the block that contains the `AmnesiaEvidence`.
 
-*NOTE: Even before the evidence is proposed and committed, the off-chain process of gossiping valid evidence could be
- enough for honest nodes to recognize the fork and halt.*
+_NOTE: Even before the evidence is proposed and committed, the off-chain process of gossiping valid evidence could be
+enough for honest nodes to recognize the fork and halt._
 
 Other validators will vote <nil> if:
 
@@ -180,4 +176,4 @@ Other validators will vote <nil> if:
 - They don't have the Amnesia Evidence and it is has an empty polc (each validator needs to run their own trial period of the evidence)
 - Is of an AmnesiaEvidence that has already been committed to the chain.
 
-Finally it is important to stress that the protocol of having a trial period addresses attacks where a validator voted again for a different block at a later round and time. In the event, however, that the validator voted for an earlier round after voting for a later round i.e. `VoteA.Timestamp < VoteB.Timestamp && VoteA.Round > VoteB.Round` then this action is inexcusable and can be punished immediately without the need of a trial period. In this case, PotentialAmnesiaEvidence will be instantly upgraded to AmnesiaEvidence. 
+Finally it is important to stress that the protocol of having a trial period addresses attacks where a validator voted again for a different block at a later round and time. In the event, however, that the validator voted for an earlier round after voting for a later round i.e. `VoteA.Timestamp < VoteB.Timestamp && VoteA.Round > VoteB.Round` then this action is inexcusable and can be punished immediately without the need of a trial period. In this case, PotentialAmnesiaEvidence will be instantly upgraded to AmnesiaEvidence.

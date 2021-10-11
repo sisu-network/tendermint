@@ -8,7 +8,7 @@ Author: Daniil Lashin (@danil-lashin)
 
 ## Context
 
-Initial conversation: https://github.com/tendermint/tendermint/issues/2901
+Initial conversation: https://github.com/sisu-network/tendermint/issues/2901
 
 Some applications can handle transactions in parallel, or at least some
 part of tx processing can be parallelized. Now it is not possible for developer
@@ -22,7 +22,7 @@ step. It will allow developers of applications to decide how they want to
 execute transactions (in parallel or consequentially). Also it will simplify and
 speed up communications between application and Tendermint.
 
-As @jaekwon [mentioned](https://github.com/tendermint/tendermint/issues/2901#issuecomment-477746128)
+As @jaekwon [mentioned](https://github.com/sisu-network/tendermint/issues/2901#issuecomment-477746128)
 in discussion not all application will benefit from this solution. In some cases,
 when application handles transaction consequentially, it way slow down the blockchain,
 because it need to wait until full block is transmitted to application to start
@@ -78,6 +78,7 @@ type ResponseDeliverBlock struct {
 
 Also, we will need to add new config param, which will specify what kind of ABCI application uses.
 For example, it can be `abci_type`. Then we will have 2 types:
+
 - `advanced` - current ABCI
 - `simple` - proposed implementation
 
@@ -90,7 +91,7 @@ In review
 ### Positive
 
 - much simpler introduction and tutorials for new developers (instead of implementing 5 methods whey
-will need to implement only 3)
+  will need to implement only 3)
 - txs can be handled in parallel
 - simpler interface
 - faster communications between Tendermint and application

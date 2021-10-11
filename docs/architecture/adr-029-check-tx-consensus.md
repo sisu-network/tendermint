@@ -3,7 +3,7 @@
 ## Changelog
 
 04-10-2018: Update with link to issue
-[#2384](https://github.com/tendermint/tendermint/issues/2384) and reason for rejection
+[#2384](https://github.com/sisu-network/tendermint/issues/2384) and reason for rejection
 19-09-2018: Initial Draft
 
 ## Context
@@ -37,7 +37,7 @@ func (blockExec *BlockExecutor) CheckBlock(block *types.Block) error {
 
 such a method in BlockExecutor to check all txs' validity in that block.
 
-However, this method should not be implemented like that, because checkTx will share the same state used in mempool in the app.  So we should define a new interface method checkBlock in Application to indicate it to use the same state as deliverTx.
+However, this method should not be implemented like that, because checkTx will share the same state used in mempool in the app. So we should define a new interface method checkBlock in Application to indicate it to use the same state as deliverTx.
 
 ```
 type Application interface {
@@ -102,15 +102,13 @@ The txCount is like the nonce in ethermint, it should be restored when entering 
 
 An optional optimization is alter the deliverTx to deliverBlock. For the block has already been checked by checkBlock, so all the txs in it are valid. So the app can cache the block, and in the deliverBlock phase, it just needs to apply the block in the cache. This optimization can save network current in deliverTx.
 
-
-
 ## Status
 
 Rejected
 
 ## Decision
 
-Performance impact is considered too great. See [#2384](https://github.com/tendermint/tendermint/issues/2384)
+Performance impact is considered too great. See [#2384](https://github.com/sisu-network/tendermint/issues/2384)
 
 ## Consequences
 

@@ -25,7 +25,7 @@ We could also consider using a MaxDataBytes instead of or in addition to MaxByte
 
 ## MaxBytes vs MaxDataBytes
 
-The [PR #3045](https://github.com/tendermint/tendermint/pull/3045) suggested
+The [PR #3045](https://github.com/sisu-network/tendermint/pull/3045) suggested
 additional clarity/justification was necessary here, wither respect to the use
 of MaxDataBytes in addition to, or instead of, MaxBytes.
 
@@ -52,8 +52,8 @@ every tx to be its size in bytes.
 
 Therefore, we should
 
-1) Get rid of MaxTxs.
-2) Rename MaxTxsBytes to MaxBytes.
+1. Get rid of MaxTxs.
+2. Rename MaxTxsBytes to MaxBytes.
 
 When we need to ReapMaxBytes from the mempool, we calculate the upper bound as follows:
 
@@ -94,11 +94,11 @@ Accepted.
 
 ### Positive
 
-* one way to limit the size of a block
-* less variables to configure
+- one way to limit the size of a block
+- less variables to configure
 
 ### Negative
 
-* constants that need to be adjusted if the underlying structs got changed
+- constants that need to be adjusted if the underlying structs got changed
 
 ### Neutral

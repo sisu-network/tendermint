@@ -38,7 +38,7 @@ type DuplicateVoteEvidence struct {
 }
 ```
 
-Tendermint has now introduced a new type of evidence to protect light clients from being attacked. This `LightClientAttackEvidence` (see [here](https://github.com/informalsystems/tendermint-rs/blob/31ca3e64ce90786c1734caf186e30595832297a4/docs/spec/lightclient/attacks/evidence-handling.md) for more information) is vastly different to `DuplicateVoteEvidence` in that it is physically a much different size containing a complete signed header and validator set. It is formed within the light client, not the consensus reactor and requires a lot more information from state to verify (`VerifyLightClientAttack(commonHeader, trustedHeader *SignedHeader, commonVals *ValidatorSet)`  vs `VerifyDuplicateVote(chainID string, pubKey PubKey)`). Finally it batches validators together (a single piece of evidence that implicates multiple malicious validators at a height) as opposed to having individual evidence (each piece of evidence is per validator per height). This evidence stretches the existing mould that was used to accommodate new types of evidence and has thus caused us to reconsider how evidence should be formatted and processed.
+Tendermint has now introduced a new type of evidence to protect light clients from being attacked. This `LightClientAttackEvidence` (see [here](https://github.com/informalsystems/tendermint-rs/blob/31ca3e64ce90786c1734caf186e30595832297a4/docs/spec/lightclient/attacks/evidence-handling.md) for more information) is vastly different to `DuplicateVoteEvidence` in that it is physically a much different size containing a complete signed header and validator set. It is formed within the light client, not the consensus reactor and requires a lot more information from state to verify (`VerifyLightClientAttack(commonHeader, trustedHeader *SignedHeader, commonVals *ValidatorSet)` vs `VerifyDuplicateVote(chainID string, pubKey PubKey)`). Finally it batches validators together (a single piece of evidence that implicates multiple malicious validators at a height) as opposed to having individual evidence (each piece of evidence is per validator per height). This evidence stretches the existing mould that was used to accommodate new types of evidence and has thus caused us to reconsider how evidence should be formatted and processed.
 
 ```go
 type LightClientAttackEvidence struct { // proposed struct in spec
@@ -49,7 +49,8 @@ type LightClientAttackEvidence struct { // proposed struct in spec
   timestamp time.Time // taken from the block time at the common height
 }
 ```
-*Note: These three attack types have been proven by the research team to be exhaustive*
+
+_Note: These three attack types have been proven by the research team to be exhaustive_
 
 ## Possible Approaches for Evidence Composition
 
@@ -61,7 +62,7 @@ Evidence remains on a per validator basis. This causes the least disruption to t
 
 We would ignore amnesia evidence (as individually it's hard to make) and revert to the initial split we had before where `DuplicateVoteEvidence` is also used for light client equivocation attacks and thus we only need `LunaticEvidence`. We would also most likely need to remove `Verify` from the interface as this isn't really something that can be used.
 
-``` go
+```go
 type LunaticEvidence struct { // individual lunatic attack
   header *Header
   commonHeight int64
@@ -85,8 +86,7 @@ However individual evidence has the advantage that it is easy to check if a node
 
 The decision is to adopt a hybrid design.
 
-We allow individual and batch evidence to coexist together, meaning that verification is done depending on the evidence type and that  the bulk of the work is done in the evidence pool itself (including forming the evidence to be sent to the application).
-
+We allow individual and batch evidence to coexist together, meaning that verification is done depending on the evidence type and that the bulk of the work is done in the evidence pool itself (including forming the evidence to be sent to the application).
 
 ## Detailed Design
 
@@ -112,6 +112,7 @@ type LightClientAttackEvidence struct {
   CommonHeight int64 // the last height at which the primary provider and witness provider had the same header
 }
 ```
+
 where the `Hash()` is the hash of the header and commonHeight.
 
 Note: It was also discussed whether to include the commit hash which captures the validators that signed the header. However this would open the opportunity for someone to propose multiple permutations of the same evidence (through different commit signatures) hence it was omitted. Consequentially, when it comes to verifying evidence in a block, for `LightClientAttackEvidence` we can't just check the hashes because someone could have the same hash as us but a different commit where less than 1/3 validators voted which would be an invalid version of the evidence. (see `fastCheck` for more details)
@@ -122,6 +123,7 @@ type DuplicateVoteEvidence {
   VoteB *Vote
 }
 ```
+
 where the `Hash()` is the hash of the two votes
 
 For both of these types of evidence, `Bytes()` represents the proto-encoded byte array format of the evidence and `ValidateBasic` is
@@ -129,7 +131,7 @@ an initial consistency check to make sure the evidence has a valid structure.
 
 ### The Evidence Pool
 
-`LightClientAttackEvidence` is generated in the light client and `DuplicateVoteEvidence` in consensus. Both are sent to the evidence pool through `AddEvidence(ev Evidence) error`. The evidence pool's primary purpose is to verify evidence. It also gossips evidence to other peers' evidence pool and serves it to consensus so it can be committed on chain and the relevant information can be sent to the application in order to exercise punishment. When evidence is added, the pool first runs `Has(ev Evidence)` to check if it has already received it (by comparing hashes) and then  `Verify(ev Evidence) error`.  Once verified the evidence pool stores it it's pending database. There are two databases: one for pending evidence that is not yet committed and another of the committed evidence (to avoid committing evidence twice)
+`LightClientAttackEvidence` is generated in the light client and `DuplicateVoteEvidence` in consensus. Both are sent to the evidence pool through `AddEvidence(ev Evidence) error`. The evidence pool's primary purpose is to verify evidence. It also gossips evidence to other peers' evidence pool and serves it to consensus so it can be committed on chain and the relevant information can be sent to the application in order to exercise punishment. When evidence is added, the pool first runs `Has(ev Evidence)` to check if it has already received it (by comparing hashes) and then `Verify(ev Evidence) error`. Once verified the evidence pool stores it it's pending database. There are two databases: one for pending evidence that is not yet committed and another of the committed evidence (to avoid committing evidence twice)
 
 #### Verification
 
@@ -182,14 +184,12 @@ type EvidenceInfo struct {
 
 `time`, `validators` and `totalVotingPower` are need to form the `abci.Evidence` that we send to the application layer. More in this to come later.
 
-
 #### Broadcasting and receiving evidence
 
 The evidence pool also runs a reactor that broadcasts the newly validated
 evidence to all connected peers.
 
 Receiving evidence from other evidence reactors works in the same manner as receiving evidence from the consensus reactor or a light client.
-
 
 #### Proposing evidence on the block
 
@@ -201,10 +201,9 @@ This performs the following actions:
 1. Loops through all the evidence to check that nothing has been duplicated
 
 2. For each evidence, run `fastCheck(ev evidence)` which works similar to `Has` but instead for `LightClientAttackEvidence` if it has the
-same hash it then goes on to check that the validators it has are all signers in the commit of the conflicting header. If it doesn't pass fast check (because it hasn't seen the evidence before) then it will have to verify the evidence.
+   same hash it then goes on to check that the validators it has are all signers in the commit of the conflicting header. If it doesn't pass fast check (because it hasn't seen the evidence before) then it will have to verify the evidence.
 
 3. runs `Verify(ev Evidence)` - Note: this also saves the evidence to the db as mentioned before.
-
 
 #### Updating application and pool
 
@@ -229,11 +228,10 @@ type Evidence struct {
 	Time time.Time `protobuf:"bytes,4,opt,name=time,proto3,stdtime" json:"time"`
 	// Total voting power of the validator set in case the ABCI application does
 	// not store historical validators.
-	// https://github.com/tendermint/tendermint/issues/4581
+	// https://github.com/sisu-network/tendermint/issues/4581
 	TotalVotingPower int64 `protobuf:"varint,5,opt,name=total_voting_power,json=totalVotingPower,proto3" json:"total_voting_power,omitempty"`
 }
 ```
-
 
 This `Update()` function does the following:
 
@@ -242,7 +240,8 @@ This `Update()` function does the following:
 - Marks evidence as committed and saves to db. This prevents validators from proposing committed evidence in the future
   Note: the db just saves the height and the hash. There is no need to save the entire committed evidence
 
-- Forms ABCI evidence as such:  (note for `DuplicateVoteEvidence` the validators array size is 1)
+- Forms ABCI evidence as such: (note for `DuplicateVoteEvidence` the validators array size is 1)
+
   ```go
   for _, val := range evInfo.Validators {
     abciEv = append(abciEv, &abci.Evidence{
@@ -289,7 +288,6 @@ Implemented
 - Unable to query evidence for address / time without evidence pool
 
 ### Neutral
-
 
 ## References
 

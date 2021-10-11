@@ -8,13 +8,13 @@ This guide provides instructions for upgrading to specific versions of Tendermin
 This release is not compatible with previous blockchains due to changes to
 the encoding format (see "Protocol Buffers," below) and the block header (see "Blockchain Protocol").
 
-Note also that Tendermint 0.34 also requires Go 1.15 or higher. 
+Note also that Tendermint 0.34 also requires Go 1.15 or higher.
 
 ### ABCI Changes
 
-* The `ABCIVersion` is now `0.17.0`.
+- The `ABCIVersion` is now `0.17.0`.
 
-* New ABCI methods (`ListSnapshots`, `LoadSnapshotChunk`, `OfferSnapshot`, and `ApplySnapshotChunk`)
+- New ABCI methods (`ListSnapshots`, `LoadSnapshotChunk`, `OfferSnapshot`, and `ApplySnapshotChunk`)
   were added to support the new State Sync feature.
   Previously, syncing a new node to a preexisting network could take days; but with State Sync,
   new nodes are able to join a network in a matter of seconds.
@@ -23,23 +23,23 @@ Note also that Tendermint 0.34 also requires Go 1.15 or higher.
   (If you don't want to support State Sync in your application, you can just implement these new
   ABCI methods as no-ops, leaving them empty.)
 
-* `KV.Pair` has been replaced with `abci.EventAttribute`. The `EventAttribute.Index` field
+- `KV.Pair` has been replaced with `abci.EventAttribute`. The `EventAttribute.Index` field
   allows ABCI applications to dictate which events should be indexed.
 
-* The blockchain can now start from an arbitrary initial height,
+- The blockchain can now start from an arbitrary initial height,
   provided to the application via `RequestInitChain.InitialHeight`.
 
-* ABCI evidence type is now an enum with two recognized types of evidence:
+- ABCI evidence type is now an enum with two recognized types of evidence:
   `DUPLICATE_VOTE` and `LIGHT_CLIENT_ATTACK`.
   Applications should be able to handle these evidence types
   (i.e., through slashing or other accountability measures).
 
-* The [`PublicKey` type](https://github.com/tendermint/tendermint/blob/master/proto/tendermint/crypto/keys.proto#L13-L15)
+- The [`PublicKey` type](https://github.com/sisu-network/tendermint/blob/master/proto/tendermint/crypto/keys.proto#L13-L15)
   (used in ABCI as part of `ValidatorUpdate`) now uses a `oneof` protobuf type.
   Note that since Tendermint only supports ed25519 validator keys, there's only one
-  option in the `oneof`.  For more, see "Protocol Buffers," below.
+  option in the `oneof`. For more, see "Protocol Buffers," below.
 
-* The field `Proof`, on the ABCI type `ResponseQuery`, is now named `ProofOps`.
+- The field `Proof`, on the ABCI type `ResponseQuery`, is now named `ProofOps`.
   For more, see "Crypto," below.
 
 ### P2P Protocol
@@ -49,14 +49,14 @@ directory. For more, see "Protobuf," below.
 
 ### Blockchain Protocol
 
-* `Header#LastResultsHash` previously was the root hash of a Merkle tree built from `ResponseDeliverTx(Code, Data)` responses.
+- `Header#LastResultsHash` previously was the root hash of a Merkle tree built from `ResponseDeliverTx(Code, Data)` responses.
   As of 0.34,`Header#LastResultsHash` is now the root hash of a Merkle tree built from:
-    * `BeginBlock#Events`
-    * Root hash of a Merkle tree built from `ResponseDeliverTx(Code, Data,
-      GasWanted, GasUsed, Events)` responses
-    * `BeginBlock#Events`
 
-* Merkle hashes of empty trees previously returned nothing, but now return the hash of an empty input,
+  - `BeginBlock#Events`
+  - Root hash of a Merkle tree built from `ResponseDeliverTx(Code, Data, GasWanted, GasUsed, Events)` responses
+  - `BeginBlock#Events`
+
+- Merkle hashes of empty trees previously returned nothing, but now return the hash of an empty input,
   to conform with [RFC-6962](https://tools.ietf.org/html/rfc6962).
   This mainly affects `Header#DataHash`, `Header#LastResultsHash`, and
   `Header#EvidenceHash`, which are often empty. Non-empty hashes can also be affected, e.g. if their
@@ -94,10 +94,10 @@ wire serialization.
 
 However, Tendermint users and contributors may note the following changes:
 
-* Directory layout changes: All proto files have been moved under one directory, `/proto`.
+- Directory layout changes: All proto files have been moved under one directory, `/proto`.
   This is in line with the recommended file layout by [Buf](https://buf.build).
   For more, see the [Buf documentation](https://buf.build/docs/lint-checkers#file_layout).
-* ABCI Changes: As noted in the "ABCI Changes" section above, the `PublicKey` type now uses
+- ABCI Changes: As noted in the "ABCI Changes" section above, the `PublicKey` type now uses
   a `oneof` type.
 
 For more on the Protobuf changes, please see our [blog post on this migration](https://medium.com/tendermint/tendermint-0-34-protocol-buffers-and-you-8c40558939ae).
@@ -108,32 +108,32 @@ Tendermint 0.34 includes new and updated consensus parameters.
 
 #### Version Parameters (New)
 
-* `AppVersion`, which is the version of the ABCI application.
+- `AppVersion`, which is the version of the ABCI application.
 
 #### Evidence Parameters
 
-* `MaxBytes`, which caps the total amount of evidence. The default is 1048576 (1 MB). 
+- `MaxBytes`, which caps the total amount of evidence. The default is 1048576 (1 MB).
 
 ### Crypto
 
 #### Keys
 
-* Keys no longer include a type prefix. For example, ed25519 pubkeys have been renamed from
+- Keys no longer include a type prefix. For example, ed25519 pubkeys have been renamed from
   `PubKeyEd25519` to `PubKey`. This reduces stutter (e.g., `ed25519.PubKey`).
-* Keys are now byte slices (`[]byte`) instead of byte arrays (`[<size>]byte`).
-* The multisig functionality that was previously in Tendermint now has
+- Keys are now byte slices (`[]byte`) instead of byte arrays (`[<size>]byte`).
+- The multisig functionality that was previously in Tendermint now has
   a new home within the Cosmos SDK:
   [`cosmos/cosmos-sdk/types/multisig`](https://github.com/cosmos/cosmos-sdk/blob/master/crypto/types/multisig/multisignature.go).
 
 #### `merkle` Package
 
-* `SimpleHashFromMap()` and `SimpleProofsFromMap()` were removed.
-* The prefix `Simple` has been removed. (For example, `SimpleProof` is now called `Proof`.)
-* All protobuf messages have been moved to the `/proto` directory.
-* The protobuf message `Proof` that contained multiple ProofOp's has been renamed to `ProofOps`.
+- `SimpleHashFromMap()` and `SimpleProofsFromMap()` were removed.
+- The prefix `Simple` has been removed. (For example, `SimpleProof` is now called `Proof`.)
+- All protobuf messages have been moved to the `/proto` directory.
+- The protobuf message `Proof` that contained multiple ProofOp's has been renamed to `ProofOps`.
   As noted above, this affects the ABCI type `ResponseQuery`:
   The field that was named Proof is now named `ProofOps`.
-* `HashFromByteSlices` and `ProofsFromByteSlices` now return a hash for empty inputs, to conform with
+- `HashFromByteSlices` and `ProofsFromByteSlices` now return a hash for empty inputs, to conform with
   [RFC-6962](https://tools.ietf.org/html/rfc6962).
 
 ### `libs` Package
@@ -154,19 +154,19 @@ about the justifications and details behind this change.
 
 Other user-relevant changes include:
 
-* The old `lite` package was removed; the new light client uses the `light` package.
-* The `Verifier` was broken up into two pieces:
-    * Core verification logic (pure `VerifyX` functions)
-    * `Client` object, which represents the complete light client
-* The RPC client can be found in the `/rpc` directory.
-* The HTTP(S) proxy is located in the `/proxy` directory.
+- The old `lite` package was removed; the new light client uses the `light` package.
+- The `Verifier` was broken up into two pieces:
+  - Core verification logic (pure `VerifyX` functions)
+  - `Client` object, which represents the complete light client
+- The RPC client can be found in the `/rpc` directory.
+- The HTTP(S) proxy is located in the `/proxy` directory.
 
 ### `state` Package
 
-* A new field `State.InitialHeight` has been added to record the initial chain height, which must be `1`
+- A new field `State.InitialHeight` has been added to record the initial chain height, which must be `1`
   (not `0`) if starting from height `1`. This can be configured via the genesis field `initial_height`.
-* The `state` package now has a `Store` interface. All functions in
-  [state/store.go](https://github.com/tendermint/tendermint/blob/56911ee35298191c95ef1c7d3d5ec508237aaff4/state/store.go#L42-L42)
+- The `state` package now has a `Store` interface. All functions in
+  [state/store.go](https://github.com/sisu-network/tendermint/blob/56911ee35298191c95ef1c7d3d5ec508237aaff4/state/store.go#L42-L42)
   are now part of the interface. The interface returns errors on all methods and can be used by calling `state.NewStore(dbm.DB)`.
 
 ### `privval` Package
@@ -176,33 +176,32 @@ This is a optional field and can be ignored by key management systems;
 however, if you are using the same key management system for multiple different
 blockchains, we recommend that you check the chain ID.
 
-
 ### RPC
 
-* `/unsafe_start_cpu_profiler`, `/unsafe_stop_cpu_profiler` and
+- `/unsafe_start_cpu_profiler`, `/unsafe_stop_cpu_profiler` and
   `/unsafe_write_heap_profile` were removed.
-   For profiling, please use the pprof server, which can
+  For profiling, please use the pprof server, which can
   be enabled through `--rpc.pprof_laddr=X` flag or `pprof_laddr=X` config setting
   in the rpc section.
-* The `Content-Type` header returned on RPC calls is now (correctly) set as `application/json`.
+- The `Content-Type` header returned on RPC calls is now (correctly) set as `application/json`.
 
 ### Version
 
-Version is now set through Go linker flags `ld_flags`. Applications that are using tendermint as a library should set this at compile time. 
+Version is now set through Go linker flags `ld_flags`. Applications that are using tendermint as a library should set this at compile time.
 
 Example:
 
 ```sh
-go install -mod=readonly -ldflags "-X github.com/tendermint/tendermint/version.TMCoreSemVer=$(go list -m github.com/tendermint/tendermint | sed  's/ /\@/g') -s -w " -trimpath ./cmd
+go install -mod=readonly -ldflags "-X github.com/sisu-network/tendermint/version.TMCoreSemVer=$(go list -m github.com/sisu-network/tendermint | sed  's/ /\@/g') -s -w " -trimpath ./cmd
 ```
 
-Additionally, the exported constant `version.Version` is now `version.TMCoreSemVer`. 
+Additionally, the exported constant `version.Version` is now `version.TMCoreSemVer`.
 
 ## v0.33.4
 
 ### Go API
 
-* `rpc/client` HTTP and local clients have been moved into `http` and `local`
+- `rpc/client` HTTP and local clients have been moved into `http` and `local`
   subpackages, and their constructors have been renamed to `New()`.
 
 ### Protobuf Changes
@@ -270,7 +269,7 @@ change.
 The secret connection now includes a transcript hashing. If you want to
 implement a handshake (or otherwise have an existing implementation), you'll
 need to make the same changes that were made
-[here](https://github.com/tendermint/tendermint/pull/3668).
+[here](https://github.com/sisu-network/tendermint/pull/3668).
 
 ### Config Changes
 
@@ -278,30 +277,30 @@ You will need to generate a new config if you have used a prior version of tende
 
 Tags have been entirely renamed throughout the codebase to events and there
 keys are called
-[compositeKeys](https://github.com/tendermint/tendermint/blob/6d05c531f7efef6f0619155cf10ae8557dd7832f/docs/app-dev/indexing-transactions.md).
+[compositeKeys](https://github.com/sisu-network/tendermint/blob/6d05c531f7efef6f0619155cf10ae8557dd7832f/docs/app-dev/indexing-transactions.md).
 
 Evidence Params has been changed to include duration.
 
-* `consensus_params.evidence.max_age_duration`.
-* Renamed `consensus_params.evidence.max_age` to `max_age_num_blocks`.
+- `consensus_params.evidence.max_age_duration`.
+- Renamed `consensus_params.evidence.max_age` to `max_age_num_blocks`.
 
 ### Go API
 
-* `libs/common` has been removed in favor of specific pkgs.
-    * `async`
-    * `service`
-    * `rand`
-    * `net`
-    * `strings`
-    * `cmap`
-* removal of `errors` pkg
+- `libs/common` has been removed in favor of specific pkgs.
+  - `async`
+  - `service`
+  - `rand`
+  - `net`
+  - `strings`
+  - `cmap`
+- removal of `errors` pkg
 
 ### RPC Changes
 
-* `/validators` is now paginated (default: 30 vals per page)
-* `/block_results` response format updated [see RPC docs for details](https://docs.tendermint.com/master/rpc/#/Info/block_results)
-* Event suffix has been removed from the ID in event responses
-* IDs are now integers not `json-client-XYZ`
+- `/validators` is now paginated (default: 30 vals per page)
+- `/block_results` response format updated [see RPC docs for details](https://docs.tendermint.com/master/rpc/#/Info/block_results)
+- Event suffix has been removed from the ID in event responses
+- IDs are now integers not `json-client-XYZ`
 
 ## v0.32.0
 
@@ -402,7 +401,7 @@ query.MustParse("tm.event = 'Tx' AND transfer.recipient = 'bar'")
 query.MustParse("tm.event = 'Tx' AND transfer.sender = 'foo' AND transfer.recipient = 'bar'")
 ```
 
-For further documentation on `Events`, see the [docs](https://github.com/tendermint/tendermint/blob/60827f75623b92eff132dc0eff5b49d2025c591e/docs/spec/abci/abci.md#events).
+For further documentation on `Events`, see the [docs](https://github.com/sisu-network/tendermint/blob/60827f75623b92eff132dc0eff5b49d2025c591e/docs/spec/abci/abci.md#events).
 
 ### Go Applications
 
@@ -493,18 +492,18 @@ due to changes in how various data structures are hashed.
 Any implementations of Tendermint blockchain verification, including lite clients,
 will need to be updated. For specific details:
 
-* [Merkle tree](https://github.com/tendermint/spec/blob/master/spec/blockchain/encoding.md#merkle-trees)
-* [ConsensusParams](https://github.com/tendermint/spec/blob/master/spec/blockchain/state.md#consensusparams)
+- [Merkle tree](https://github.com/tendermint/spec/blob/master/spec/blockchain/encoding.md#merkle-trees)
+- [ConsensusParams](https://github.com/tendermint/spec/blob/master/spec/blockchain/state.md#consensusparams)
 
 There was also a small change to field ordering in the vote struct. Any
 implementations of an out-of-process validator (like a Key-Management Server)
 will need to be updated. For specific details:
 
-* [Vote](https://github.com/tendermint/spec/blob/master/spec/consensus/signing.md#votes)
+- [Vote](https://github.com/tendermint/spec/blob/master/spec/consensus/signing.md#votes)
 
 Finally, the proposer selection algorithm continues to evolve. See the
 [work-in-progress
-specification](https://github.com/tendermint/tendermint/pull/3140).
+specification](https://github.com/sisu-network/tendermint/pull/3140).
 
 For everything else, please see the [CHANGELOG](./CHANGELOG.md#v0.29.0).
 
@@ -553,9 +552,9 @@ for consistency with other messages.
 
 Note that the TCP sockets don't yet use a persistent key,
 so while they're encrypted, they can't yet be properly authenticated.
-See [#3105](https://github.com/tendermint/tendermint/issues/3105).
+See [#3105](https://github.com/sisu-network/tendermint/issues/3105).
 Note the Unix socket has neither encryption nor authentication, but will
-add a shared-secret in [#3099](https://github.com/tendermint/tendermint/issues/3099).
+add a shared-secret in [#3099](https://github.com/sisu-network/tendermint/issues/3099).
 
 ## v0.27.0
 
@@ -654,11 +653,11 @@ just the `Data` field set:
 
 For more information, see:
 
-* [ADR-026](https://github.com/tendermint/tendermint/blob/30519e8361c19f4bf320ef4d26288ebc621ad725/docs/architecture/adr-026-general-merkle-proof.md)
-* [Relevant ABCI
-  documentation](https://github.com/tendermint/tendermint/blob/30519e8361c19f4bf320ef4d26288ebc621ad725/docs/spec/abci/apps.md#query-proofs)
-* [Description of
-  keys](https://github.com/tendermint/tendermint/blob/30519e8361c19f4bf320ef4d26288ebc621ad725/crypto/merkle/proof_key_path.go#L14)
+- [ADR-026](https://github.com/sisu-network/tendermint/blob/30519e8361c19f4bf320ef4d26288ebc621ad725/docs/architecture/adr-026-general-merkle-proof.md)
+- [Relevant ABCI
+  documentation](https://github.com/sisu-network/tendermint/blob/30519e8361c19f4bf320ef4d26288ebc621ad725/docs/spec/abci/apps.md#query-proofs)
+- [Description of
+  keys](https://github.com/sisu-network/tendermint/blob/30519e8361c19f4bf320ef4d26288ebc621ad725/crypto/merkle/proof_key_path.go#L14)
 
 ### Go API Changes
 
@@ -672,7 +671,7 @@ serialized before they are passed in.
 
 The `node.RunForever` function was removed. Signal handling and running forever
 should instead be explicitly configured by the caller. See how we do it
-[here](https://github.com/tendermint/tendermint/blob/30519e8361c19f4bf320ef4d26288ebc621ad725/cmd/tendermint/commands/run_node.go#L60).
+[here](https://github.com/sisu-network/tendermint/blob/30519e8361c19f4bf320ef4d26288ebc621ad725/cmd/tendermint/commands/run_node.go#L60).
 
 ### Other
 

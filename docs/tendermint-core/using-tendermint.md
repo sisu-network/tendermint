@@ -39,7 +39,7 @@ tendermint testnet --help
 
 The `genesis.json` file in `$TMHOME/config/` defines the initial
 TendermintCore state upon genesis of the blockchain ([see
-definition](https://github.com/tendermint/tendermint/blob/master/types/genesis.go)).
+definition](https://github.com/sisu-network/tendermint/blob/master/types/genesis.go)).
 
 #### Fields
 
@@ -47,36 +47,36 @@ definition](https://github.com/tendermint/tendermint/blob/master/types/genesis.g
 - `chain_id`: ID of the blockchain. **This must be unique for
   every blockchain.** If your testnet blockchains do not have unique
   chain IDs, you will have a bad time. The ChainID must be less than 50 symbols.
-- `initial_height`: Height at which Tendermint should begin at. If a blockchain is conducting a network upgrade, 
-    starting from the stopped height brings uniqueness to previous heights. 
+- `initial_height`: Height at which Tendermint should begin at. If a blockchain is conducting a network upgrade,
+  starting from the stopped height brings uniqueness to previous heights.
 - `consensus_params` [spec](https://github.com/tendermint/spec/blob/master/spec/core/state.md#consensusparams)
-    - `block`
-        - `max_bytes`: Max block size, in bytes.
-        - `max_gas`: Max gas per block.
-        - `time_iota_ms`: Minimum time increment between consecutive blocks (in
+  - `block`
+    - `max_bytes`: Max block size, in bytes.
+    - `max_gas`: Max gas per block.
+    - `time_iota_ms`: Minimum time increment between consecutive blocks (in
       milliseconds). If the block header timestamp is ahead of the system clock,
       decrease this value.
-    - `evidence`
-        - `max_age_num_blocks`: Max age of evidence, in blocks. The basic formula
+  - `evidence`
+    - `max_age_num_blocks`: Max age of evidence, in blocks. The basic formula
       for calculating this is: MaxAgeDuration / {average block time}.
-        - `max_age_duration`: Max age of evidence, in time. It should correspond
+    - `max_age_duration`: Max age of evidence, in time. It should correspond
       with an app's "unbonding period" or other similar mechanism for handling
       [Nothing-At-Stake
       attacks](https://github.com/ethereum/wiki/wiki/Proof-of-Stake-FAQ#what-is-the-nothing-at-stake-problem-and-how-can-it-be-fixed).
-        - `max_num`: This sets the maximum number of evidence that can be committed
+    - `max_num`: This sets the maximum number of evidence that can be committed
       in a single block. and should fall comfortably under the max block
       bytes when we consider the size of each evidence.
-    - `validator`
-        - `pub_key_types`: Public key types validators can use.
-    - `version`
-        - `app_version`: ABCI application version.
+  - `validator`
+    - `pub_key_types`: Public key types validators can use.
+  - `version`
+    - `app_version`: ABCI application version.
 - `validators`: List of initial validators. Note this may be overridden entirely by the
   application, and may be left empty to make explicit that the
   application will initialize the validator set with ResponseInitChain.
-    - `pub_key`: The first element specifies the `pub_key` type. 1
+  - `pub_key`: The first element specifies the `pub_key` type. 1
     == Ed25519. The second element are the pubkey bytes.
-    - `power`: The validator's voting power.
-    - `name`: Name of the validator (optional).
+  - `power`: The validator's voting power.
+  - `name`: Name of the validator (optional).
 - `app_hash`: The expected application hash (as returned by the
   `ResponseInfo` ABCI message) upon genesis. If the app's hash does
   not match, Tendermint will panic.
@@ -101,12 +101,10 @@ definition](https://github.com/tendermint/tendermint/blob/master/types/genesis.g
     "evidence": {
       "max_age_num_blocks": "100000",
       "max_age_duration": "172800000000000",
-      "max_num": 50,
+      "max_num": 50
     },
     "validator": {
-      "pub_key_types": [
-        "ed25519"
-      ]
+      "pub_key_types": ["ed25519"]
     }
   },
   "validators": [
@@ -182,7 +180,6 @@ Visit `http://localhost:26657` in your browser to see the list of other
 endpoints. Some take no arguments (like `/status`), while others specify
 the argument name and use `_` as a placeholder.
 
-
 > TIP: Find the RPC Documentation [here](https://docs.tendermint.com/master/rpc/)
 
 ### Formatting
@@ -236,8 +233,7 @@ Note that raw hex cannot be used in `POST` transactions.
 ## Reset
 
 > :warning: **UNSAFE** Only do this in development and only if you can
-afford to lose all blockchain data!
-
+> afford to lose all blockchain data!
 
 To reset a blockchain, stop the node and run:
 
@@ -351,19 +347,19 @@ When `tendermint init` is run, both a `genesis.json` and
 
 ```json
 {
-  "validators" : [
+  "validators": [
     {
-      "pub_key" : {
-        "value" : "h3hk+QE8c6QLTySp8TcfzclJw/BG79ziGB/pIA+DfPE=",
-        "type" : "tendermint/PubKeyEd25519"
+      "pub_key": {
+        "value": "h3hk+QE8c6QLTySp8TcfzclJw/BG79ziGB/pIA+DfPE=",
+        "type": "tendermint/PubKeyEd25519"
       },
-      "power" : 10,
-      "name" : ""
+      "power": 10,
+      "name": ""
     }
   ],
-  "app_hash" : "",
-  "chain_id" : "test-chain-rDlYSN",
-  "genesis_time" : "0001-01-01T00:00:00Z"
+  "app_hash": "",
+  "chain_id": "test-chain-rDlYSN",
+  "genesis_time": "0001-01-01T00:00:00Z"
 }
 ```
 
@@ -371,17 +367,17 @@ And the `priv_validator_key.json`:
 
 ```json
 {
-  "last_step" : 0,
-  "last_round" : "0",
-  "address" : "B788DEDE4F50AD8BC9462DE76741CCAFF87D51E2",
-  "pub_key" : {
-    "value" : "h3hk+QE8c6QLTySp8TcfzclJw/BG79ziGB/pIA+DfPE=",
-    "type" : "tendermint/PubKeyEd25519"
+  "last_step": 0,
+  "last_round": "0",
+  "address": "B788DEDE4F50AD8BC9462DE76741CCAFF87D51E2",
+  "pub_key": {
+    "value": "h3hk+QE8c6QLTySp8TcfzclJw/BG79ziGB/pIA+DfPE=",
+    "type": "tendermint/PubKeyEd25519"
   },
-  "last_height" : "0",
-  "priv_key" : {
-    "value" : "JPivl82x+LfVkp8i3ztoTjY6c6GJ4pBxQexErOCyhwqHeGT5ATxzpAtPJKnxNx/NyUnD8Ebv3OIYH+kgD4N88Q==",
-    "type" : "tendermint/PrivKeyEd25519"
+  "last_height": "0",
+  "priv_key": {
+    "value": "JPivl82x+LfVkp8i3ztoTjY6c6GJ4pBxQexErOCyhwqHeGT5ATxzpAtPJKnxNx/NyUnD8Ebv3OIYH+kgD4N88Q==",
+    "type": "tendermint/PrivKeyEd25519"
   }
 }
 ```
@@ -498,18 +494,18 @@ Now we can update our genesis file. For instance, if the new
 
 ```json
 {
-  "address" : "5AF49D2A2D4F5AD4C7C8C4CC2FB020131E9C4902",
-  "pub_key" : {
-    "value" : "l9X9+fjkeBzDfPGbUM7AMIRE6uJN78zN5+lk5OYotek=",
-    "type" : "tendermint/PubKeyEd25519"
+  "address": "5AF49D2A2D4F5AD4C7C8C4CC2FB020131E9C4902",
+  "pub_key": {
+    "value": "l9X9+fjkeBzDfPGbUM7AMIRE6uJN78zN5+lk5OYotek=",
+    "type": "tendermint/PubKeyEd25519"
   },
-  "priv_key" : {
-    "value" : "EDJY9W6zlAw+su6ITgTKg2nTZcHAH1NMTW5iwlgmNDuX1f35+OR4HMN88ZtQzsAwhETq4k3vzM3n6WTk5ii16Q==",
-    "type" : "tendermint/PrivKeyEd25519"
+  "priv_key": {
+    "value": "EDJY9W6zlAw+su6ITgTKg2nTZcHAH1NMTW5iwlgmNDuX1f35+OR4HMN88ZtQzsAwhETq4k3vzM3n6WTk5ii16Q==",
+    "type": "tendermint/PrivKeyEd25519"
   },
-  "last_step" : 0,
-  "last_round" : "0",
-  "last_height" : "0"
+  "last_step": 0,
+  "last_round": "0",
+  "last_height": "0"
 }
 ```
 
@@ -517,27 +513,27 @@ then the new `genesis.json` will be:
 
 ```json
 {
-  "validators" : [
+  "validators": [
     {
-      "pub_key" : {
-        "value" : "h3hk+QE8c6QLTySp8TcfzclJw/BG79ziGB/pIA+DfPE=",
-        "type" : "tendermint/PubKeyEd25519"
+      "pub_key": {
+        "value": "h3hk+QE8c6QLTySp8TcfzclJw/BG79ziGB/pIA+DfPE=",
+        "type": "tendermint/PubKeyEd25519"
       },
-      "power" : 10,
-      "name" : ""
+      "power": 10,
+      "name": ""
     },
     {
-      "pub_key" : {
-        "value" : "l9X9+fjkeBzDfPGbUM7AMIRE6uJN78zN5+lk5OYotek=",
-        "type" : "tendermint/PubKeyEd25519"
+      "pub_key": {
+        "value": "l9X9+fjkeBzDfPGbUM7AMIRE6uJN78zN5+lk5OYotek=",
+        "type": "tendermint/PubKeyEd25519"
       },
-      "power" : 10,
-      "name" : ""
+      "power": 10,
+      "name": ""
     }
   ],
-  "app_hash" : "",
-  "chain_id" : "test-chain-rDlYSN",
-  "genesis_time" : "0001-01-01T00:00:00Z"
+  "app_hash": "",
+  "chain_id": "test-chain-rDlYSN",
+  "genesis_time": "0001-01-01T00:00:00Z"
 }
 ```
 
@@ -568,7 +564,7 @@ library will deny making connections to peers with the same IP address.
 ### Upgrading
 
 See the
-[UPGRADING.md](https://github.com/tendermint/tendermint/blob/master/UPGRADING.md)
+[UPGRADING.md](https://github.com/sisu-network/tendermint/blob/master/UPGRADING.md)
 guide. You may need to reset your chain between major breaking releases.
 Although, we expect Tendermint to have fewer breaking releases in the future
 (especially after 1.0 release).

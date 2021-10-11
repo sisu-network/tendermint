@@ -24,6 +24,7 @@ core design choices made. Others are minor and mostly about the interface of
 Now, when publishing a message to subscribers, we can do it in a goroutine:
 
 _using channels for data transmission_
+
 ```go
 for each subscriber {
     out := subscriber.outc
@@ -34,6 +35,7 @@ for each subscriber {
 ```
 
 _by invoking callback functions_
+
 ```go
 for each subscriber {
     go subscriber.callbackFn()
@@ -112,7 +114,6 @@ type MsgAndTags struct {
 
 ### Subscription Struct
 
-
 Change `Subscribe()` function to return a `Subscription` struct:
 
 ```go
@@ -182,22 +183,23 @@ in the consensus tests) and not block on the buffered ones. If a client is too
 slow to keep up with it's messages, it's subscription is terminated:
 
 for each subscription {
-    out := subscription.outChan
-    if cap(out) == 0 {
-        // block on unbuffered channel
-        out <- msg
-    } else {
-        // don't block on buffered channels
-        select {
-            case out <- msg:
-            default:
-                // set the error, notify on the cancel chan
-                subscription.err = fmt.Errorf("client is too slow for msg)
-                close(subscription.cancelChan)
+out := subscription.outChan
+if cap(out) == 0 {
+// block on unbuffered channel
+out <- msg
+} else {
+// don't block on buffered channels
+select {
+case out <- msg:
+default:
+// set the error, notify on the cancel chan
+subscription.err = fmt.Errorf("client is too slow for msg)
+close(subscription.cancelChan)
 
                 // ... unsubscribe and close out
         }
     }
+
 }
 
 ### How this new design solves the current issues?
@@ -240,8 +242,7 @@ In review
 
 ### Neutral
 
-
-[#951]: https://github.com/tendermint/tendermint/issues/951
-[#1879]: https://github.com/tendermint/tendermint/issues/1879
-[#1880]: https://github.com/tendermint/tendermint/issues/1880
-[#2826]: https://github.com/tendermint/tendermint/issues/2826
+[#951]: https://github.com/sisu-network/tendermint/issues/951
+[#1879]: https://github.com/sisu-network/tendermint/issues/1879
+[#1880]: https://github.com/sisu-network/tendermint/issues/1880
+[#2826]: https://github.com/sisu-network/tendermint/issues/2826

@@ -1,30 +1,31 @@
 # ADR 047: Handling evidence from light client
 
 ## Changelog
-* 18-02-2020: Initial draft
-* 24-02-2020: Second version
-* 13-04-2020: Add PotentialAmnesiaEvidence and a few remarks
-* 31-07-2020: Remove PhantomValidatorEvidence
-* 14-08-2020: Introduce light traces (listed now as an alternative approach)
-* 20-08-2020: Light client produces evidence when detected instead of passing to full node
-* 16-09-2020: Post-implementation revision
+
+- 18-02-2020: Initial draft
+- 24-02-2020: Second version
+- 13-04-2020: Add PotentialAmnesiaEvidence and a few remarks
+- 31-07-2020: Remove PhantomValidatorEvidence
+- 14-08-2020: Introduce light traces (listed now as an alternative approach)
+- 20-08-2020: Light client produces evidence when detected instead of passing to full node
+- 16-09-2020: Post-implementation revision
 
 ### Glossary of Terms
 
 - a `LightBlock` is the unit of data that a light client receives, verifies and stores.
-It is composed of a validator set, commit and header all at the same height.
+  It is composed of a validator set, commit and header all at the same height.
 - a **Trace** is seen as an array of light blocks across a range of heights that were
-created as a result of skipping verification.
+  created as a result of skipping verification.
 - a **Provider** is a full node that a light client is connected to and serves the light
-client signed headers and validator sets.
+  client signed headers and validator sets.
 - `VerifySkipping` (sometimes known as bisection or verify non-adjacent) is a method the
-light client uses to verify a target header from a trusted header. The process involves verifying
-intermediate headers in between the two by making sure that 1/3 of the validators that signed
-the trusted header also signed the untrusted one.
+  light client uses to verify a target header from a trusted header. The process involves verifying
+  intermediate headers in between the two by making sure that 1/3 of the validators that signed
+  the trusted header also signed the untrusted one.
 - **Light Bifurcation Point**: If the light client was to run `VerifySkipping` with two providers
-(i.e. a primary and a witness), the bifurcation point is the height that the headers
-from each of these providers are different yet valid. This signals that one of the providers
-may be trying to fool the light client.
+  (i.e. a primary and a witness), the bifurcation point is the height that the headers
+  from each of these providers are different yet valid. This signals that one of the providers
+  may be trying to fool the light client.
 
 ## Context
 
@@ -54,7 +55,6 @@ difference as the light client would in any case have to validate all the header
 from both witness and primary. Using traces would consume a large amount of bandwidth
 and adds a DDOS vector to the full node.
 
-
 ## Decision
 
 The light client will be divided into two components: a `Verifier` (either sequential or
@@ -68,7 +68,6 @@ can proceed to extract any evidence (as is discussed in detail later).
 Upon successfully detecting the evidence, the light client will send it to both primary and
 witness before halting. It will not send evidence to other peers nor continue to verify the
 primary's header against any other header.
-
 
 ## Detailed Design
 
@@ -113,15 +112,15 @@ func (c *Client) examineConflictingHeaderAgainstTrace(
 which performs the following
 
 1. Checking that the trusted header is the same. Currently, they should not theoretically be different
-because witnesses cannot be added and removed after the client is initialized. But we do this any way
-as a sanity check. If this fails we have to drop the witness.
+   because witnesses cannot be added and removed after the client is initialized. But we do this any way
+   as a sanity check. If this fails we have to drop the witness.
 
 2. Querying and verifying the witness's headers using bisection at the same heights of all the
-intermediary headers of the primary (In the above example this is A, B, C, D, F, H). If bisection fails or the witness stops responding then
-we can call the witness faulty and drop it.
+   intermediary headers of the primary (In the above example this is A, B, C, D, F, H). If bisection fails or the witness stops responding then
+   we can call the witness faulty and drop it.
 
 3. We eventually reach a verified header by the witness which is not the same as the intermediary header (In the above example this is E).
-This is the point of bifurcation (This could also be the last header).
+   This is the point of bifurcation (This could also be the last header).
 
 This function then returns the trace of blocks from the witness node between the common header and the
 divergent header of the primary as it
@@ -171,13 +170,13 @@ This then ends the process and the verify function that was called at the start 
 the user.
 
 For a detailed overview of how each of these three attacks can be conducted please refer to the
-[fork accountability spec]((https://github.com/tendermint/spec/blob/master/spec/consensus/light-client/accountability.md)).
+[fork accountability spec](<(https://github.com/tendermint/spec/blob/master/spec/consensus/light-client/accountability.md)>).
 
 ## Full Node Verification
 
 When a full node receives evidence from the light client it will need to verify
 it for itself before gossiping it to peers and trying to commit it on chain. This process is outlined
- in [ADR-059](https://github.com/tendermint/tendermint/blob/master/docs/architecture/adr-059-evidence-composition-and-lifecycle.md).
+in [ADR-059](https://github.com/sisu-network/tendermint/blob/master/docs/architecture/adr-059-evidence-composition-and-lifecycle.md).
 
 ## Status
 
@@ -187,28 +186,27 @@ Implemented.
 
 ### Positive
 
-* Light client has increased security against Lunatic, Equivocation and Amnesia attacks.
-* Do not need intermediate data structures to encapsulate the malicious behavior
-* Generalized evidence makes the code simpler
+- Light client has increased security against Lunatic, Equivocation and Amnesia attacks.
+- Do not need intermediate data structures to encapsulate the malicious behavior
+- Generalized evidence makes the code simpler
 
 ### Negative
 
-* Breaking change on the light client from versions 0.33.8 and below. Previous
-versions will still send `ConflictingHeadersEvidence` but it won't be recognized
-by the full node. Light clients will however still refuse the header and shut down.
-* Amnesia attacks although detected, will not be able to be punished as it is not
-clear from the current information which nodes behaved maliciously.
-* Evidence module must handle both individual and grouped evidence.
+- Breaking change on the light client from versions 0.33.8 and below. Previous
+  versions will still send `ConflictingHeadersEvidence` but it won't be recognized
+  by the full node. Light clients will however still refuse the header and shut down.
+- Amnesia attacks although detected, will not be able to be punished as it is not
+  clear from the current information which nodes behaved maliciously.
+- Evidence module must handle both individual and grouped evidence.
 
 ### Neutral
 
 ## References
 
-* [Fork accountability spec](https://github.com/tendermint/spec/blob/master/spec/consensus/light-client/accountability.md)
-* [ADR 056: Proving amnesia attacks](https://github.com/tendermint/tendermint/blob/master/docs/architecture/adr-056-proving-amnesia-attacks.md)
-* [ADR-059: Evidence Composition and Lifecycle](https://github.com/tendermint/tendermint/blob/master/docs/architecture/adr-059-evidence-composition-and-lifecycle.md)
-* [Informal's Light Client Detector](https://github.com/informalsystems/tendermint-rs/blob/master/docs/spec/lightclient/detection/detection.md)
-
+- [Fork accountability spec](https://github.com/tendermint/spec/blob/master/spec/consensus/light-client/accountability.md)
+- [ADR 056: Proving amnesia attacks](https://github.com/sisu-network/tendermint/blob/master/docs/architecture/adr-056-proving-amnesia-attacks.md)
+- [ADR-059: Evidence Composition and Lifecycle](https://github.com/sisu-network/tendermint/blob/master/docs/architecture/adr-059-evidence-composition-and-lifecycle.md)
+- [Informal's Light Client Detector](https://github.com/informalsystems/tendermint-rs/blob/master/docs/spec/lightclient/detection/detection.md)
 
 ## Appendix A
 

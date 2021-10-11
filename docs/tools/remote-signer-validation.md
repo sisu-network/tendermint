@@ -1,7 +1,7 @@
 # tm-signer-harness
 
 Located under the `tools/tm-signer-harness` folder in the [Tendermint
-repository](https://github.com/tendermint/tendermint).
+repository](https://github.com/sisu-network/tendermint).
 
 The Tendermint remote signer test harness facilitates integration testing
 between Tendermint and remote signers such as
@@ -23,7 +23,7 @@ When executed, `tm-signer-harness`:
 ## Prerequisites
 
 Requires the same prerequisites as for building
-[Tendermint](https://github.com/tendermint/tendermint).
+[Tendermint](https://github.com/sisu-network/tendermint).
 
 ## Building
 
@@ -141,16 +141,16 @@ to terminate it gracefully.
 The following list shows the various exit codes from `tm-signer-harness` and
 their meanings:
 
-| Exit Code | Description |
-| --- | --- |
-| 0 | Success! |
-| 1 | Invalid command line parameters supplied to `tm-signer-harness` |
-| 2 | Maximum number of accept retries reached (the `-accept-retries` parameter) |
-| 3 | Failed to load `${TMHOME}/config/genesis.json` |
-| 4 | Failed to create listener specified by `-addr` parameter |
-| 5 | Failed to start listener |
-| 6 | Interrupted by `SIGINT` (e.g. when hitting Ctrl+Break or Ctrl+C) |
-| 7 | Other unknown error |
-| 8 | Test 1 failed: public key mismatch |
-| 9 | Test 2 failed: signing of proposals failed |
-| 10 | Test 3 failed: signing of votes failed |
+| Exit Code | Description                                                                |
+| --------- | -------------------------------------------------------------------------- |
+| 0         | Success!                                                                   |
+| 1         | Invalid command line parameters supplied to `tm-signer-harness`            |
+| 2         | Maximum number of accept retries reached (the `-accept-retries` parameter) |
+| 3         | Failed to load `${TMHOME}/config/genesis.json`                             |
+| 4         | Failed to create listener specified by `-addr` parameter                   |
+| 5         | Failed to start listener                                                   |
+| 6         | Interrupted by `SIGINT` (e.g. when hitting Ctrl+Break or Ctrl+C)           |
+| 7         | Other unknown error                                                        |
+| 8         | Test 1 failed: public key mismatch                                         |
+| 9         | Test 2 failed: signing of proposals failed                                 |
+| 10        | Test 3 failed: signing of votes failed                                     |
