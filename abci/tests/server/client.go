@@ -1,4 +1,4 @@
-package testsuite
+package server
 
 import (
 	"bytes"
