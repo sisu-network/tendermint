@@ -431,14 +431,19 @@ func (mem *CListMempool) resCbFirstTime(
 				tx:        tx,
 			}
 			memTx.senders.Store(peerID, true)
-			mem.addTx(memTx)
-			mem.logger.Info("Added good transaction",
-				"tx", txID(tx),
-				"res", r,
-				"height", memTx.height,
-				"total", mem.Size(),
-			)
-			mem.notifyTxsAvailable()
+			// MODIFIED: make a callback to the app to check if we should include a tx into a mempool.
+			if mem.preAddTx == nil || mem.preAddTx(memTx.tx) == nil {
+				mem.addTx(memTx)
+				mem.logger.Info("Added good transaction",
+					"tx", txID(tx),
+					"res", r,
+					"height", memTx.height,
+					"total", mem.Size(),
+				)
+				mem.notifyTxsAvailable()
+			} else {
+				mem.logger.Info("cannot add tx into the pool. Callback returns error")
+			}
 		} else {
 			// ignore bad transaction
 			mem.logger.Info("Rejected bad transaction",

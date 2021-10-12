@@ -641,6 +641,38 @@ func TestMempoolRemoteAppConcurrency(t *testing.T) {
 	require.NoError(t, err)
 }
 
+func TestPreAddTxCallback(t *testing.T) {
+	app := kvstore.NewApplication()
+	cc := proxy.NewLocalClientCreator(app)
+	config := cfg.ResetTestRoot("mempool_test")
+	config.Mempool.MaxTxsBytes = 10
+	mempool, cleanup := newMempoolWithAppAndConfig(cc, config)
+	defer cleanup()
+
+	callback := func(tx types.Tx) error {
+		return nil
+	}
+	mempool.SetPreAddTxToMempoolFunc(callback)
+
+	// 1. There is no error, a tx should be added into the pool.
+	err := mempool.CheckTx([]byte{0x01}, nil, TxInfo{})
+	require.NoError(t, err)
+	assert.EqualValues(t, 1, mempool.TxsBytes())
+	// Remove the tx from the pool.
+	err = mempool.Update(1, []types.Tx{[]byte{0x01}}, abciResponses(1, abci.CodeTypeOK), nil, nil)
+	require.NoError(t, err)
+	assert.EqualValues(t, 0, mempool.TxsBytes())
+
+	// 2. Callback returns error before adding the tx into the pool.
+	callback = func(tx types.Tx) error {
+		return fmt.Errorf("duplicated tx")
+	}
+	mempool.SetPreAddTxToMempoolFunc(callback)
+	err = mempool.CheckTx([]byte{0x02}, nil, TxInfo{})
+	require.NoError(t, err)
+	assert.EqualValues(t, 0, mempool.TxsBytes())
+}
+
 // caller must close server
 func newRemoteApp(
 	t *testing.T,
