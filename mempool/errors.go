@@ -8,6 +8,8 @@ import (
 var (
 	// ErrTxInCache is returned to the client if we saw tx earlier
 	ErrTxInCache = errors.New("tx already exists in cache")
+
+	ErrTxIsAlreadyProcessed = errors.New("Tx is already processed or added to mempool by the application")
 )
 
 // ErrTxTooLarge means the tx is too big to be sent in a message to other peers

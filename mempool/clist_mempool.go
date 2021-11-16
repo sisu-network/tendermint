@@ -290,6 +290,10 @@ func (mem *CListMempool) CheckTx(tx types.Tx, cb func(*abci.Response), txInfo Tx
 		return ErrTxInCache
 	}
 
+	if mem.preAddTx != nil && mem.preAddTx(tx) != nil {
+		return ErrTxIsAlreadyProcessed
+	}
+
 	reqRes := mem.proxyAppConn.CheckTxAsync(abci.RequestCheckTx{Tx: tx})
 	reqRes.SetCallback(mem.reqResCb(tx, txInfo.SenderID, txInfo.SenderP2PID, cb))
 
@@ -431,19 +435,14 @@ func (mem *CListMempool) resCbFirstTime(
 				tx:        tx,
 			}
 			memTx.senders.Store(peerID, true)
-			// MODIFIED: make a callback to the app to check if we should include a tx into a mempool.
-			if mem.preAddTx == nil || mem.preAddTx(memTx.tx) == nil {
-				mem.addTx(memTx)
-				mem.logger.Info("Added good transaction",
-					"tx", txID(tx),
-					"res", r,
-					"height", memTx.height,
-					"total", mem.Size(),
-				)
-				mem.notifyTxsAvailable()
-			} else {
-				mem.logger.Info("cannot add tx into the pool. Callback returns error")
-			}
+			mem.addTx(memTx)
+			mem.logger.Info("Added good transaction",
+				"tx", txID(tx),
+				"res", r,
+				"height", memTx.height,
+				"total", mem.Size(),
+			)
+			mem.notifyTxsAvailable()
 		} else {
 			// ignore bad transaction
 			mem.logger.Info("Rejected bad transaction",
